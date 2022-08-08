@@ -5,6 +5,7 @@ import MobileNav from "./components/MobileNav";
 import Navbar from "./components/Navbar";
 import GlobalStyles from "./GlobalStyles";
 import "./App.css";
+import MainFeed from "./pages/MainFeed";
 
 function App() {
   const [{ themeName }] = useContext(ThemeContext);
@@ -15,7 +16,9 @@ function App() {
           <GlobalStyles />
           <Navbar />
           <MobileNav />
-          <Routes></Routes>
+          <Routes>
+            <Route exact path="/" element={<MainFeed />} />
+          </Routes>
         </Router>
       </div>
     </>

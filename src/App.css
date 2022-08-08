@@ -27,3 +27,7 @@
 body {
   background-color: var(--clr-bg);
 }
+
+.icon {
+  color: white;
+}
