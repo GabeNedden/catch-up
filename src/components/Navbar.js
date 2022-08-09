@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { BsBicycle, BsSunFill, BsFillMoonStarsFill } from "react-icons/bs";
 import { ThemeContext } from "../contexts/ThemeContext";
 import styled from "styled-components";
+import LoginButton from "./LoginButton";
+import LogoutButton from "./LogoutButton";
 
 const Navbar = () => {
   const [{ themeName, toggleTheme }] = useContext(ThemeContext);
@@ -20,6 +22,10 @@ const Navbar = () => {
         </li>
         <li>
           <Tab to="/">Hello</Tab>
+        </li>
+        <li>
+          <LoginButton />
+          <LogoutButton />
         </li>
       </Ul>
 

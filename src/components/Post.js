@@ -1,16 +1,13 @@
 import styled from "styled-components";
-
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import GoogleMapReact from "google-map-react";
 import { useState } from "react";
+import { BiSitemap } from "react-icons/bi";
 
 /* eslint-disable no-undef */
 /* global google */
 
 const Post = () => {
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyBuYKwfR1Ka0MG-GQo4nuAOTKC8xI-aVi4",
-  });
 
   const options = {
     enableHighAccuracy: true,
@@ -37,24 +34,22 @@ const Post = () => {
 
   navigator.geolocation.getCurrentPosition(success, error, options);
 
-  const containerStyle = {
-    width: "400px",
-    height: "400px",
-  };
-
-  if (loadError) {
-    console.log(loadError);
-    return loadError;
-  }
-  if (!isLoaded) return <div>Loading...</div>;
-
   return (
     <Wrapper>
-      <GoogleMap
-        zoom={4}
-        center={center}
-        mapContainerStyle={containerStyle}
-      ></GoogleMap>
+      <Display>Username!</Display>
+      <MapWrapper>
+        <GoogleMapReact
+          bootstrapURLKeys={{
+            key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+          }}
+          defaultZoom={14}
+          defaultCenter={center}
+        >
+          <Test lat={center.lat} lng={center.lng} />
+        </GoogleMapReact>
+      </MapWrapper>
+
+      <Display>Username!</Display>
     </Wrapper>
   );
 };
@@ -69,4 +64,18 @@ const Wrapper = styled.div`
   padding: 1em;
   height: 30em;
   border-radius: 1em;
+`;
+
+const Display = styled.div`
+  color: var(--clr-fg);
+`;
+
+const MapWrapper = styled.div`
+  height: 400px;
+`;
+
+const Test = styled.div`
+  background-color: red;
+  height: 50px;
+  width: 10px;
 `;
