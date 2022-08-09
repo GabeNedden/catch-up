@@ -80,4 +80,5 @@ const Button = styled.button`
   font-size: 0.9rem;
   text-transform: lowercase;
   transition: transform 0.2s ease-in-out;
+  background-color: inherit;
 `;

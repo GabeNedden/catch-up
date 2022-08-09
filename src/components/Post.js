@@ -1,36 +1,49 @@
-import React, { useState } from "react";
 import styled from "styled-components";
 
-import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 
 /* eslint-disable no-undef */
 /* global google */
 
 const Post = () => {
-  const [map, setMap] = useState(null);
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: "",
+    googleMapsApiKey: "AIzaSyBuYKwfR1Ka0MG-GQo4nuAOTKC8xI-aVi4",
   });
 
-  const center = {
-    lat: -3.745,
-    lng: -38.523,
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0,
   };
+
+  let center = {
+    lat: 0,
+    lng: 0,
+  };
+
+  function success(pos) {
+    const crd = pos.coords;
+
+    console.log(
+      `Your current position is: Latitude : ${crd.latitude}, Longitude: ${crd.longitude}`
+    );
+
+    center = {
+      lat: crd.latitude,
+      lng: crd.longitude,
+    };
+  }
+
+  function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+  }
+
+  navigator.geolocation.getCurrentPosition(success, error, options);
 
   const containerStyle = {
     width: "400px",
     height: "400px",
   };
-
-  const onLoad = React.useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
-    setMap(map);
-  }, []);
-
-  const onUnmount = React.useCallback(function callback(map) {
-    setMap(null);
-  }, []);
 
   if (loadError) {
     console.log(loadError);
@@ -41,11 +54,9 @@ const Post = () => {
   return (
     <Wrapper>
       <GoogleMap
-        zoom={2}
+        zoom={4}
         center={center}
         mapContainerStyle={containerStyle}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
       ></GoogleMap>
     </Wrapper>
   );

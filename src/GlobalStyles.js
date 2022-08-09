@@ -8,13 +8,13 @@ export default createGlobalStyle`
     margin: 0;
     border: 0;
     outline: 0;
-    background-color: inherit;
     color: inherit;
     font-family: inherit;
     font-size: inherit;
     box-shadow: none;
     box-sizing: border-box;
   }
+
 
   html, body {
         height: 100%;
@@ -26,6 +26,7 @@ export default createGlobalStyle`
     line-height: 1.5;
     background: var(--clr-bg);
     color: var(--clr-primary);
+    background-color: inherit;
 }
 
 h1,

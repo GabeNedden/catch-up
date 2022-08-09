@@ -7,6 +7,8 @@ const MainFeed = () => {
     <Wrapper>
       <div style={{ padding: "1em 0" }} />
       <Post />
+      <Post />
+      <Post />
     </Wrapper>
   );
 };
