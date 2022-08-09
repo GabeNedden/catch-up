@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { useState } from "react";
 
 /* eslint-disable no-undef */
 /* global google */
 
 const Post = () => {
+  const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyBuYKwfR1Ka0MG-GQo4nuAOTKC8xI-aVi4",
   });
@@ -16,11 +18,6 @@ const Post = () => {
     maximumAge: 0,
   };
 
-  let center = {
-    lat: 0,
-    lng: 0,
-  };
-
   function success(pos) {
     const crd = pos.coords;
 
@@ -28,10 +25,10 @@ const Post = () => {
       `Your current position is: Latitude : ${crd.latitude}, Longitude: ${crd.longitude}`
     );
 
-    center = {
+    setCenter({
       lat: crd.latitude,
       lng: crd.longitude,
-    };
+    });
   }
 
   function error(err) {
