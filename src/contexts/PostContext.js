@@ -16,7 +16,9 @@ export const PostProvider = ({ children }) => {
       },
     })
       .then((res) => res.json())
-      .then((res) => {})
+      .then((res) => {
+        setPosts(res.data);
+      })
       .catch((error) => {
         console.log("error:", error);
         setStatus("error");
@@ -28,6 +30,7 @@ export const PostProvider = ({ children }) => {
       value={{
         status,
         setStatus,
+        posts,
         isAuthenticated,
       }}
     >

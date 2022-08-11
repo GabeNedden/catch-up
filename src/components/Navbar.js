@@ -1,13 +1,16 @@
 import { useContext, useState } from "react";
+import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { BsBicycle, BsSunFill, BsFillMoonStarsFill } from "react-icons/bs";
 import { ThemeContext } from "../contexts/ThemeContext";
-import styled from "styled-components";
+import { UserContext } from "../contexts/UserContext";
+
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
 
 const Navbar = () => {
   const [{ themeName, toggleTheme }] = useContext(ThemeContext);
+  const { currentUser, status } = useContext(UserContext);
 
   return (
     <Nav>
@@ -17,9 +20,12 @@ const Navbar = () => {
             <BsBicycle />
           </Tab>
         </li>
-        <li>
-          <Tab to="/">Hello</Tab>
-        </li>
+        {currentUser ? (
+          <li>
+            <Tab to={`/profile/${currentUser._id}`}>{currentUser.username}</Tab>
+          </li>
+        ) : null}
+
         <li>
           <Tab to="/">Hello</Tab>
         </li>

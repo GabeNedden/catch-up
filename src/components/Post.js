@@ -6,28 +6,14 @@ import { BiSitemap } from "react-icons/bi";
 /* eslint-disable no-undef */
 /* global google */
 
-const Post = () => {
-  const [center, setCenter] = useState({ lat: 0, lng: 0 });
-
+const Post = ({ center }) => {
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
     maximumAge: 0,
   };
 
-  const success = (pos) => {
-    const crd = pos.coords;
-    setCenter({
-      lat: crd.latitude,
-      lng: crd.longitude,
-    });
-  };
-
-  const error = (err) => {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-  };
-
-  navigator.geolocation.getCurrentPosition(success, error, options);
+  console.log(center);
 
   return (
     <Wrapper>
@@ -38,7 +24,7 @@ const Post = () => {
             key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
           }}
           defaultZoom={14}
-          defaultCenter={{ lat: 40, lng: -84 }}
+          defaultCenter={center}
         >
           <Test lat={center.lat} lng={center.lng} />
         </GoogleMapReact>

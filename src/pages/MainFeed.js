@@ -6,9 +6,9 @@ const MainFeed = () => {
   return (
     <Wrapper>
       <div style={{ padding: "1em 0" }} />
-      <Post />
-      <Post />
-      <Post />
+      <Post center={{ lat: 40, lng: -84 }} />
+      <Post center={{ lat: 40, lng: -84 }} />
+      <Post center={{ lat: 40, lng: -84 }} />
     </Wrapper>
   );
 };

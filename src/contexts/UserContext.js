@@ -19,7 +19,6 @@ export const UserProvider = ({ children }) => {
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res);
           setCurrentUser(res.data);
           setStatus("loaded");
         })
@@ -35,6 +34,8 @@ export const UserProvider = ({ children }) => {
       value={{
         user,
         isAuthenticated,
+        currentUser,
+        status,
       }}
     >
       {children}
