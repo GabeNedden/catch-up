@@ -16,9 +16,7 @@ export const PostProvider = ({ children }) => {
       },
     })
       .then((res) => res.json())
-      .then((res) => {
-        console.log("postres:", res);
-      })
+      .then((res) => {})
       .catch((error) => {
         console.log("error:", error);
         setStatus("error");

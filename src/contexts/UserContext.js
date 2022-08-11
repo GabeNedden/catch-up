@@ -9,19 +9,19 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      fetch(
-        `https://catch-up-api.herokuapp.com/user/${user.sub.substring(6)}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      fetch(`https://catch-up-api.herokuapp.com/login`, {
+        method: "POST",
+        body: JSON.stringify({ user, isAuthenticated }),
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+      })
         .then((res) => res.json())
         .then((res) => {
-          console.log("userres:", res);
+          console.log(res);
+          setCurrentUser(res.data);
+          setStatus("loaded");
         })
         .catch((error) => {
           console.log("error:", error);
