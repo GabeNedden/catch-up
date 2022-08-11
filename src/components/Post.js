@@ -15,22 +15,17 @@ const Post = () => {
     maximumAge: 0,
   };
 
-  function success(pos) {
+  const success = (pos) => {
     const crd = pos.coords;
-
-    console.log(
-      `Your current position is: Latitude : ${crd.latitude}, Longitude: ${crd.longitude}`
-    );
-
     setCenter({
       lat: crd.latitude,
       lng: crd.longitude,
     });
-  }
+  };
 
-  function error(err) {
+  const error = (err) => {
     console.warn(`ERROR(${err.code}): ${err.message}`);
-  }
+  };
 
   navigator.geolocation.getCurrentPosition(success, error, options);
 
@@ -43,7 +38,7 @@ const Post = () => {
             key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
           }}
           defaultZoom={14}
-          defaultCenter={center}
+          defaultCenter={{ lat: 40, lng: -84 }}
         >
           <Test lat={center.lat} lng={center.lng} />
         </GoogleMapReact>

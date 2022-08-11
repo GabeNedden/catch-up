@@ -23,15 +23,17 @@ const Navbar = () => {
         <li>
           <Tab to="/">Hello</Tab>
         </li>
+      </Ul>
+      <Ul>
         <li>
           <LoginButton />
           <LogoutButton />
         </li>
-      </Ul>
 
-      <Button type="button" onClick={toggleTheme} aria-label="toggle theme">
-        {themeName === "dark" ? <BsSunFill /> : <BsFillMoonStarsFill />}
-      </Button>
+        <Button type="button" onClick={toggleTheme} aria-label="toggle theme">
+          {themeName === "dark" ? <BsSunFill /> : <BsFillMoonStarsFill />}
+        </Button>
+      </Ul>
     </Nav>
   );
 };
@@ -46,6 +48,7 @@ const Nav = styled.nav`
 
   @media only screen and (min-width: 600px) {
     display: flex;
+    justify-content: space-between;
   }
 `;
 
