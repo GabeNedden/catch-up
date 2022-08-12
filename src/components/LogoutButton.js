@@ -17,12 +17,9 @@ const LogoutButton = ({ color }) => {
 export default LogoutButton;
 
 const Button = styled.button`
-  position: absolute;
   background: none;
   outline: none;
   border: none;
-  top: 50px;
-  right: 66px;
   font-size: 30px;
   cursor: pointer;
   @media (max-width: 600px) {

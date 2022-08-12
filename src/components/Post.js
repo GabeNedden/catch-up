@@ -6,14 +6,6 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 /* global google */
 
 const Post = ({ post }) => {
-  const options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0,
-  };
-
-  console.log("post", post);
-
   return (
     <Wrapper>
       <Display>{post.username}</Display>

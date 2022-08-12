@@ -12,7 +12,6 @@ const MainFeed = () => {
       <div style={{ padding: "1em 0" }} />
       {postStatus === "loaded" ? (
         posts.map((post) => {
-          console.log("main", post);
           return <Post post={post} key={uuidv4()} />;
         })
       ) : (
