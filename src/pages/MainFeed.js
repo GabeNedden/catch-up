@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Post from "../components/Post";
+import { PostContext } from "../contexts/PostContext";
+import { v4 as uuidv4 } from "uuid";
 
 const MainFeed = () => {
+  const { postStatus, posts } = useContext(PostContext);
+
   return (
     <Wrapper>
       <div style={{ padding: "1em 0" }} />
-      <Post center={{ lat: 40, lng: -84 }} />
-      <Post center={{ lat: 40, lng: -84 }} />
-      <Post center={{ lat: 40, lng: -84 }} />
+      {postStatus === "loaded" ? (
+        posts.map((post) => {
+          console.log("main", post);
+          return <Post post={post} key={uuidv4()} />;
+        })
+      ) : (
+        <div>loading</div>
+      )}
     </Wrapper>
   );
 };

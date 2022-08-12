@@ -1,36 +1,41 @@
 import styled from "styled-components";
 import GoogleMapReact from "google-map-react";
-import { useState } from "react";
-import { BiSitemap } from "react-icons/bi";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 /* eslint-disable no-undef */
 /* global google */
 
-const Post = ({ center }) => {
+const Post = ({ post }) => {
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
     maximumAge: 0,
   };
 
-  console.log(center);
+  console.log("post", post);
 
   return (
     <Wrapper>
-      <Display>Username!</Display>
+      <Display>{post.username}</Display>
+      <Display>{post.title}</Display>
       <MapWrapper>
         <GoogleMapReact
           bootstrapURLKeys={{
             key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
           }}
           defaultZoom={14}
-          defaultCenter={center}
+          defaultCenter={post?.location}
+          yesIWantToUseGoogleMapApiInternals
         >
-          <Test lat={center.lat} lng={center.lng} />
+          <StyledIcon
+            lat={post?.location.lat}
+            lng={post?.location.lng}
+            text="My Marker"
+          />
         </GoogleMapReact>
       </MapWrapper>
 
-      <Display>Username!</Display>
+      <Display>{post.body}</Display>
     </Wrapper>
   );
 };
@@ -55,8 +60,8 @@ const MapWrapper = styled.div`
   height: 400px;
 `;
 
-const Test = styled.div`
-  background-color: red;
-  height: 50px;
-  width: 10px;
+const StyledIcon = styled(FaMapMarkerAlt)`
+  color: red;
+  font-size: 24px;
+  transform: translate(-12px, -20px);
 `;

@@ -4,7 +4,7 @@ export const PostContext = createContext(null);
 
 export const PostProvider = ({ children }) => {
   const { user, isAuthenticated } = useAuth0();
-  const [status, setStatus] = useState("loading");
+  const [postStatus, setPostStatus] = useState("loading");
   const [posts, setPosts] = useState(null);
 
   useEffect(() => {
@@ -18,18 +18,19 @@ export const PostProvider = ({ children }) => {
       .then((res) => res.json())
       .then((res) => {
         setPosts(res.data);
+        setPostStatus("loaded");
       })
       .catch((error) => {
         console.log("error:", error);
-        setStatus("error");
+        setPostStatus("error");
       });
   }, []);
 
   return (
     <PostContext.Provider
       value={{
-        status,
-        setStatus,
+        postStatus,
+        setPostStatus,
         posts,
         isAuthenticated,
       }}
