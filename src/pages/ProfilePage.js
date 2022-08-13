@@ -80,6 +80,7 @@ export default ProfilePage;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
   background-color: var(--clr-bg-alt);
   margin: 0 2em 2em 2em;
   padding: 1em;

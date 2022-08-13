@@ -24,5 +24,5 @@ const MainFeed = () => {
 export default MainFeed;
 
 const Wrapper = styled.div`
-  height: 100%;
+  min-height: 100vh;
 `;
