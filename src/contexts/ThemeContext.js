@@ -6,9 +6,20 @@ const ThemeContext = createContext();
 const ThemeProvider = ({ children }) => {
   const [themeName, setThemeName] = useState("light");
 
+  if (
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches &&
+    localStorage.getItem("themeName") !== "light"
+  ) {
+    setThemeName("dark");
+  }
+
   useEffect(() => {
-    const isDark = localStorage.getItem("themeName") === "dark";
-    if (isDark) setThemeName("dark");
+    if (localStorage.getItem("themeName") === "dark") {
+      setThemeName("dark");
+    } else if (localStorage.getItem("themeName") === "light") {
+      setThemeName("light");
+    }
   }, []);
 
   const toggleTheme = () => {
