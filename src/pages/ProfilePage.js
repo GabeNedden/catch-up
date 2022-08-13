@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 
 import GoogleMapReact from "google-map-react";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import PostModal from "../components/PostModal";
 
 const ProfilePage = () => {
   const { userId } = useParams();
@@ -43,6 +44,9 @@ const ProfilePage = () => {
   if (userId === currentUser?._id) {
     return (
       <Wrapper>
+        <PostModal />
+        <div style={{ padding: "1em 0" }} />
+
         {userLocation && (
           <MapWrapper>
             <GoogleMapReact
@@ -80,7 +84,6 @@ export default ProfilePage;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   background-color: var(--clr-bg-alt);
   margin: 0 2em 2em 2em;
   padding: 1em;
