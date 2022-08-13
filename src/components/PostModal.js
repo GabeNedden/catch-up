@@ -1,25 +1,10 @@
-import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
-import { useParams } from "react-router-dom";
 
 import GoogleMapReact from "google-map-react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-} from "@material-ui/core";
-
 const PostModal = () => {
-  const { userId } = useParams();
-  const { user, currentUser, isAuthenticated } = useContext(UserContext);
   const [userLocation, setUserLocation] = useState(null);
   const [clickedLocation, setClickedLocation] = useState(null);
 
@@ -38,31 +23,29 @@ const PostModal = () => {
   });
 
   return (
-    <Dialog open={true}>
-      <DialogContent>
-        <Wrapper>
-          <MapWrapper>
-            <GoogleMapReact
-              onClick={(e) => setClickedLocation({ lat: e.lat, lng: e.lng })}
-              defaultZoom={16}
-              defaultCenter={userLocation}
-              bootstrapURLKeys={{
-                key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-              }}
-              yesIWantToUseGoogleMapApiInternals
-            >
-              {clickedLocation && (
-                <StyledIcon
-                  lat={clickedLocation.lat}
-                  lng={clickedLocation.lng}
-                  text="My Marker"
-                />
-              )}
-            </GoogleMapReact>
-          </MapWrapper>
-        </Wrapper>
-      </DialogContent>
-    </Dialog>
+    <Wrapper>
+      {userLocation && (
+        <MapWrapper>
+          <GoogleMapReact
+            onClick={(e) => setClickedLocation({ lat: e.lat, lng: e.lng })}
+            defaultZoom={16}
+            defaultCenter={userLocation}
+            bootstrapURLKeys={{
+              key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+            }}
+            yesIWantToUseGoogleMapApiInternals
+          >
+            {clickedLocation && (
+              <StyledIcon
+                lat={clickedLocation.lat}
+                lng={clickedLocation.lng}
+                text="My Marker"
+              />
+            )}
+          </GoogleMapReact>
+        </MapWrapper>
+      )}
+    </Wrapper>
   );
 };
 
@@ -71,9 +54,15 @@ export default PostModal;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   background-color: var(--clr-bg-alt);
+  margin: 0 2em 2em 2em;
+  padding: 1em;
+  height: 30em;
   border-radius: 1em;
+`;
+
+const Display = styled.div`
+  color: var(--clr-fg);
 `;
 
 const MapWrapper = styled.div`

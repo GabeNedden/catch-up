@@ -18,20 +18,6 @@ const ProfilePage = () => {
   // console.log("user:", user);
   // console.log("currentUser:", currentUser);
 
-  const success = (pos) => {
-    setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-  };
-
-  const error = (err) => {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-  };
-
-  navigator.geolocation.getCurrentPosition(success, error, {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0,
-  });
-
   if (!isAuthenticated) {
     return (
       <Wrapper>
@@ -44,30 +30,8 @@ const ProfilePage = () => {
   if (userId === currentUser?._id) {
     return (
       <Wrapper>
+        <div>this is your page</div>
         <PostModal />
-        <div style={{ padding: "1em 0" }} />
-
-        {userLocation && (
-          <MapWrapper>
-            <GoogleMapReact
-              onClick={(e) => setClickedLocation({ lat: e.lat, lng: e.lng })}
-              defaultZoom={16}
-              defaultCenter={userLocation}
-              bootstrapURLKeys={{
-                key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-              }}
-              yesIWantToUseGoogleMapApiInternals
-            >
-              {clickedLocation && (
-                <StyledIcon
-                  lat={clickedLocation.lat}
-                  lng={clickedLocation.lng}
-                  text="My Marker"
-                />
-              )}
-            </GoogleMapReact>
-          </MapWrapper>
-        )}
       </Wrapper>
     );
   }
@@ -82,25 +46,14 @@ const ProfilePage = () => {
 export default ProfilePage;
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: var(--clr-bg-alt);
-  margin: 0 2em 2em 2em;
-  padding: 1em;
-  height: 30em;
-  border-radius: 1em;
+  min-height: 100vh;
 `;
 
-const Display = styled.div`
-  color: var(--clr-fg);
-`;
-
-const MapWrapper = styled.div`
-  height: 400px;
-`;
-
-const StyledIcon = styled(FaMapMarkerAlt)`
-  color: red;
-  font-size: 24px;
-  transform: translate(-12px, -20px);
-`;
+// display: flex;
+// flex-direction: column;
+// min-height: 100vh;
+// background-color: var(--clr-bg-alt);
+// margin: 0 2em 2em 2em;
+// padding: 1em;
+// height: 30em;
+// border-radius: 1em;
