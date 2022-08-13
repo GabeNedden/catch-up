@@ -7,6 +7,7 @@ import { RiAccountPinCircleLine, RiHomeLine } from "react-icons/ri";
 import { TbMap2 } from "react-icons/tb";
 import { HiOutlineUserGroup } from "react-icons/hi";
 
+import PostModal from "./PostModal";
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
 
@@ -16,7 +17,7 @@ const MobileNav = () => {
   const loggedInLinks = [
     { name: "test", icon: <RiHomeLine />, path: "/" },
     { name: "test", icon: <TbMap2 />, path: "/mapfeed" },
-    { name: "test", icon: <AiOutlinePlusCircle />, path: "/" },
+    { name: "test", icon: <PostModal />, path: "/" },
     { name: "test", icon: <HiOutlineUserGroup />, path: "/groups" },
     {
       name: "test",
