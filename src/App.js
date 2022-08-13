@@ -7,6 +7,8 @@ import GlobalStyles from "./GlobalStyles";
 import "./App.css";
 import MainFeed from "./pages/MainFeed";
 import ProfilePage from "./pages/ProfilePage";
+import MapFeed from "./pages/MapFeed";
+import GroupsPage from "./pages/GroupsPage";
 
 function App() {
   const [{ themeName }] = useContext(ThemeContext);
@@ -19,6 +21,9 @@ function App() {
           <MobileNav />
           <Routes>
             <Route exact path="/" element={<MainFeed />} />
+            <Route exact path="/mapfeed" element={<MapFeed />} />
+            <Route exact path="/" element={<MainFeed />} />
+            <Route exact path="/groups" element={<GroupsPage />} />
             <Route exact path="/profile/:userId" element={<ProfilePage />} />
           </Routes>
         </Router>

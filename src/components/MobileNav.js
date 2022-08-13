@@ -1,29 +1,45 @@
-import React from "react";
+import { useContext } from "react";
 import styled from "styled-components";
+import { UserContext } from "../contexts/UserContext";
 import { Link } from "react-router-dom";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { RiAccountPinCircleLine, RiHomeLine } from "react-icons/ri";
 import { TbMap2 } from "react-icons/tb";
 import { HiOutlineUserGroup } from "react-icons/hi";
 
-const links = [
-  { name: "test", icon: <RiHomeLine />, path: "/" },
-  { name: "test", icon: <TbMap2 />, path: "/" },
-  { name: "test", icon: <AiOutlinePlusCircle />, path: "/" },
-  { name: "test", icon: <HiOutlineUserGroup />, path: "/" },
-  { name: "test", icon: <RiAccountPinCircleLine />, path: "/" },
-];
+import LoginButton from "./LoginButton";
+import LogoutButton from "./LogoutButton";
 
 const MobileNav = () => {
+  const { currentUser, status } = useContext(UserContext);
+
+  const loggedInLinks = [
+    { name: "test", icon: <RiHomeLine />, path: "/" },
+    { name: "test", icon: <TbMap2 />, path: "/mapfeed" },
+    { name: "test", icon: <AiOutlinePlusCircle />, path: "/" },
+    { name: "test", icon: <HiOutlineUserGroup />, path: "/groups" },
+    {
+      name: "test",
+      icon: <RiAccountPinCircleLine />,
+      path: `/profile/${currentUser?._id}`,
+    },
+  ];
+
   return (
     <Navbar>
-      {links.map((link, index) => {
-        return (
-          <Tab key={index} to={link.path}>
-            {link.icon}
-          </Tab>
-        );
-      })}
+      {currentUser &&
+        loggedInLinks.map((link, index) => {
+          return (
+            <Tab key={index} to={link.path}>
+              {link.icon}
+            </Tab>
+          );
+        })}
+      {!currentUser && (
+        <Tab to="/">
+          <LoginButton />
+        </Tab>
+      )}
     </Navbar>
   );
 };
