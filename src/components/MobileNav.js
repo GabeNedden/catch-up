@@ -1,36 +1,64 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
 import { Link } from "react-router-dom";
-import { AiOutlinePlusCircle } from "react-icons/ai";
 import { RiAccountPinCircleLine, RiHomeLine } from "react-icons/ri";
 import { TbMap2 } from "react-icons/tb";
 import { HiOutlineUserGroup } from "react-icons/hi";
+import { AiOutlinePlusCircle, AiFillMinusCircle } from "react-icons/ai";
 
 import PostModal from "./PostModal";
 import LoginButton from "./LoginButton";
-import LogoutButton from "./LogoutButton";
 
 const MobileNav = () => {
   const { currentUser, status } = useContext(UserContext);
+  const [open, setOpen] = useState(false);
 
   return (
     <Navbar>
+      {open && <PostModal currentUser={currentUser} />}
       {currentUser && (
         <>
-          <Tab to="/">
+          <Tab
+            to="/"
+            onClick={() => {
+              setOpen(false);
+            }}
+          >
             <RiHomeLine />
           </Tab>
-          <Tab to="/mapfeed">
+
+          <Tab
+            to="/mapfeed"
+            onClick={() => {
+              setOpen(false);
+            }}
+          >
             <TbMap2 />
           </Tab>
 
-          <PostModal />
+          <PostTab
+            onClick={() => {
+              setOpen(!open);
+            }}
+          >
+            {open ? <AiFillMinusCircle /> : <AiOutlinePlusCircle />}
+          </PostTab>
 
-          <Tab to="/groups">
+          <Tab
+            to="/groups"
+            onClick={() => {
+              setOpen(false);
+            }}
+          >
             <HiOutlineUserGroup />
           </Tab>
-          <Tab to={`/profile/${currentUser?._id}`}>
+          <Tab
+            to={`/profile/${currentUser?._id}`}
+            onClick={() => {
+              setOpen(false);
+            }}
+          >
             <RiAccountPinCircleLine />
           </Tab>
         </>
@@ -49,12 +77,13 @@ export default MobileNav;
 const Navbar = styled.div`
   display: flex;
   background-color: var(--clr-bg-alt);
+  border: 1px solid red;
   height: 66px;
   overflow: hidden;
   position: fixed;
   bottom: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 99;
 
   @media only screen and (min-width: 600px) {
     display: none;
@@ -72,13 +101,34 @@ const Tab = styled(Link)`
   text-decoration: none;
   font-size: 28px;
 
-  /* Change the color of links on hover */
   &:hover {
     background-color: var(--clr-bg-alt);
     color: var(--clr-fg-alt);
   }
 
-  /* Add a color to the active/current link */
+  &:active {
+    background-color: var(--clr-primary);
+    color: var(--clr-fg);
+  }
+`;
+
+const PostTab = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: var(--clr-primary);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 28px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--clr-bg-alt);
+    color: var(--clr-fg-alt);
+  }
+
   &:active {
     background-color: var(--clr-primary);
     color: var(--clr-fg);

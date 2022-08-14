@@ -1,23 +1,40 @@
 import { useState } from "react";
 import styled from "styled-components";
-
 import GoogleMapReact from "google-map-react";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { AiOutlinePlusCircle } from "react-icons/ai";
 
-const PostModal = () => {
+const PostModal = ({ currentUser }) => {
+  const initialState = {
+    title: "",
+    body: "",
+    sharedWith: [],
+    location: {},
+    startTime: "",
+    endTime: "",
+  };
+
   const [userLocation, setUserLocation] = useState(null);
-  const [clickedLocation, setClickedLocation] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [clickedLocation, setClickedLocation] = useState(false);
+
+  const [values, setValues] = useState(initialState);
+
+  console.log(currentUser);
+
+  const onChange = (event) => {
+    setValues({ ...values, [event.target.name]: event.target.value });
+  };
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    console.log(values);
+  };
 
   const success = (pos) => {
     setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
   };
-
   const error = (err) => {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   };
-
   navigator.geolocation.getCurrentPosition(success, error, {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -26,19 +43,17 @@ const PostModal = () => {
 
   return (
     <>
-      <PostTab
-        onClick={() => {
-          setOpen(!open);
-        }}
-      >
-        <AiOutlinePlusCircle>New Catch Up!</AiOutlinePlusCircle>
-      </PostTab>
-
-      {userLocation && open && (
+      {userLocation && (
         <Wrapper>
+          <Center>
+            <Display>Share plans with Friends or Groups!</Display>
+          </Center>
           <MapWrapper>
             <GoogleMapReact
-              onClick={(e) => setClickedLocation({ lat: e.lat, lng: e.lng })}
+              onClick={(e) => {
+                setClickedLocation(true);
+                setValues({ ...values, location: { lat: e.lat, lng: e.lng } });
+              }}
               defaultZoom={16}
               defaultCenter={userLocation}
               bootstrapURLKeys={{
@@ -48,13 +63,43 @@ const PostModal = () => {
             >
               {clickedLocation && (
                 <StyledIcon
-                  lat={clickedLocation.lat}
-                  lng={clickedLocation.lng}
+                  lat={values.location.lat}
+                  lng={values.location.lng}
                   text="My Marker"
                 />
               )}
             </GoogleMapReact>
           </MapWrapper>
+
+          <Form onSubmit={onSubmit}>
+            <Label>Title</Label>
+            <Input
+              name="title"
+              value={values.title}
+              onChange={onChange}
+              defaultValue="Title"
+            />
+
+            <Label>Body</Label>
+            <Input
+              name="body"
+              value={values.body}
+              onChange={onChange}
+              defaultValue="Body"
+            />
+
+            <Label>Share with</Label>
+            <Input
+              name="sharedWith"
+              value={values.sharedWith}
+              onChange={onChange}
+              defaultValue=""
+            />
+
+            <Center>
+              <SubmitButton type="submit" />
+            </Center>
+          </Form>
         </Wrapper>
       )}
     </>
@@ -71,16 +116,32 @@ const Wrapper = styled.div`
   width: 100%;
   overflow: auto;
   padding: 15px;
+  z-index: -1;
 
   background-color: var(--clr-bg);
   border-radius: 10px;
   height: 100vh;
 `;
 
+const Center = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Display = styled.div`
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--clr-primary);
+  margin-bottom: 10px;
+`;
+
 const MapWrapper = styled.div`
   width: 90%;
   height: 400px;
   margin: auto;
+  margin-bottom: 20px;
 `;
 
 const StyledIcon = styled(FaMapMarkerAlt)`
@@ -89,27 +150,43 @@ const StyledIcon = styled(FaMapMarkerAlt)`
   transform: translate(-12px, -20px);
 `;
 
-const PostTab = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const Form = styled.form`
+  max-width: 500px;
+  margin: 0 auto;
+`;
+
+const Input = styled.input`
+  display: block;
   width: 100%;
-  color: var(--clr-primary);
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 28px;
+  border-radius: 4px;
+  border: 1px solid var(--clr-fg-alt);
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--clr-fg-alt);
+  background-color: var(--clr-bg);
+`;
 
-  /* Change the color of links on hover */
-  &:hover {
-    cursor: pointer;
-    background-color: var(--clr-bg-alt);
-    color: var(--clr-fg-alt);
-  }
+const Label = styled.label`
+  line-height: 2;
+  text-align: left;
+  display: block;
+  margin-bottom: 3px;
+  margin-top: 20px;
+  color: white;
+  font-size: 14px;
+  font-weight: 200;
+  color: var(--clr-fg-alt);
+`;
 
-  /* Add a color to the active/current link */
-  &:active {
-    background-color: var(--clr-primary);
-    color: var(--clr-fg);
-  }
+const SubmitButton = styled.input`
+  background: var(--clr-fg);
+  color: var(--clr-bg);
+  border-radius: 5px;
+  text-transform: uppercase;
+  margin-top: 30px;
+  padding: 20px;
+  font-size: 16px;
+  letter-spacing: 8px;
+  cursor: pointer;
 `;
