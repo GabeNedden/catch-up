@@ -65,7 +65,7 @@ export default PostModal;
 
 const Wrapper = styled.div`
   position: fixed;
-  z-index: 9;
+  z-index: -1;
   left: 0;
   top: 0;
   width: 100%;
@@ -73,9 +73,8 @@ const Wrapper = styled.div`
   padding: 15px;
 
   background-color: var(--clr-bg);
-  border: 1px solid red;
   border-radius: 10px;
-  height: 90vh;
+  height: 100vh;
 `;
 
 const MapWrapper = styled.div`
