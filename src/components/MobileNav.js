@@ -14,28 +14,27 @@ import LogoutButton from "./LogoutButton";
 const MobileNav = () => {
   const { currentUser, status } = useContext(UserContext);
 
-  const loggedInLinks = [
-    { name: "test", icon: <RiHomeLine />, path: "/" },
-    { name: "test", icon: <TbMap2 />, path: "/mapfeed" },
-    { name: "test", icon: <PostModal />, path: "/" },
-    { name: "test", icon: <HiOutlineUserGroup />, path: "/groups" },
-    {
-      name: "test",
-      icon: <RiAccountPinCircleLine />,
-      path: `/profile/${currentUser?._id}`,
-    },
-  ];
-
   return (
     <Navbar>
-      {currentUser &&
-        loggedInLinks.map((link, index) => {
-          return (
-            <Tab key={index} to={link.path}>
-              {link.icon}
-            </Tab>
-          );
-        })}
+      {currentUser && (
+        <>
+          <Tab to="/">
+            <RiHomeLine />
+          </Tab>
+          <Tab to="/mapfeed">
+            <TbMap2 />
+          </Tab>
+
+          <PostModal />
+
+          <Tab to="/groups">
+            <HiOutlineUserGroup />
+          </Tab>
+          <Tab to={`/profile/${currentUser?._id}`}>
+            <RiAccountPinCircleLine />
+          </Tab>
+        </>
+      )}
       {!currentUser && (
         <Tab to="/">
           <LoginButton />

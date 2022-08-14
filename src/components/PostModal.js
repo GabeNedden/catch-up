@@ -26,13 +26,13 @@ const PostModal = () => {
 
   return (
     <>
-      <AiOutlinePlusCircle
+      <PostTab
         onClick={() => {
           setOpen(!open);
         }}
       >
-        New Catch Up!
-      </AiOutlinePlusCircle>
+        <AiOutlinePlusCircle>New Catch Up!</AiOutlinePlusCircle>
+      </PostTab>
 
       {userLocation && open && (
         <Wrapper>
@@ -88,4 +88,29 @@ const StyledIcon = styled(FaMapMarkerAlt)`
   color: red;
   font-size: 24px;
   transform: translate(-12px, -20px);
+`;
+
+const PostTab = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: var(--clr-primary);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 28px;
+
+  /* Change the color of links on hover */
+  &:hover {
+    cursor: pointer;
+    background-color: var(--clr-bg-alt);
+    color: var(--clr-fg-alt);
+  }
+
+  /* Add a color to the active/current link */
+  &:active {
+    background-color: var(--clr-primary);
+    color: var(--clr-fg);
+  }
 `;
