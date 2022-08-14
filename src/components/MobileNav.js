@@ -77,7 +77,6 @@ export default MobileNav;
 const Navbar = styled.div`
   display: flex;
   background-color: var(--clr-bg-alt);
-  border: 1px solid red;
   height: 66px;
   overflow: hidden;
   position: fixed;

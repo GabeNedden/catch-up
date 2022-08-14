@@ -9,6 +9,7 @@ import MainFeed from "./pages/MainFeed";
 import ProfilePage from "./pages/ProfilePage";
 import MapFeed from "./pages/MapFeed";
 import GroupsPage from "./pages/GroupsPage";
+import SearchResults from "./pages/SearchResults";
 
 function App() {
   const [{ themeName }] = useContext(ThemeContext);
@@ -25,6 +26,7 @@ function App() {
             <Route exact path="/" element={<MainFeed />} />
             <Route exact path="/groups" element={<GroupsPage />} />
             <Route exact path="/profile/:userId" element={<ProfilePage />} />
+            <Route exact path="/search" element={<SearchResults />} />
           </Routes>
         </Router>
       </div>
