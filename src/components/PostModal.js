@@ -11,14 +11,14 @@ const PostModal = ({ currentUser }) => {
     location: {},
     startTime: "",
     endTime: "",
+    public: false,
+    icon: "",
   };
 
   const [userLocation, setUserLocation] = useState(null);
   const [clickedLocation, setClickedLocation] = useState(false);
 
   const [values, setValues] = useState(initialState);
-
-  console.log(currentUser);
 
   const onChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -101,6 +101,7 @@ const PostModal = ({ currentUser }) => {
               <SubmitButton type="submit" />
             </Center>
           </Form>
+          <div style={{ height: "100px" }}></div>
         </Wrapper>
       )}
     </>

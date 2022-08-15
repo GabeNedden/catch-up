@@ -37,6 +37,7 @@ export default Post;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 600px;
   background-color: var(--clr-bg-alt);
   margin: 0 2em 2em 2em;
   padding: 1em;

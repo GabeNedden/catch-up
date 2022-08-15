@@ -10,18 +10,67 @@ import Avatar from "boring-avatars";
 import GoogleMapReact from "google-map-react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { PostContext } from "../contexts/PostContext";
+import PostModal from "../components/PostModal";
 
 const ProfilePage = () => {
+  const initialState = {
+    title: "",
+    body: "",
+    sharedWith: [],
+    location: null,
+    startTime: "",
+    endTime: "",
+    public: false,
+    now: false,
+    category: "",
+  };
+
   const { userId } = useParams();
   const { user, currentUser, isAuthenticated } = useContext(UserContext);
   const [userLocation, setUserLocation] = useState(null);
-  const [clickedLocation, setClickedLocation] = useState(null);
   const [targetUser, setTargetUser] = useState(null);
   const [targetStatus, setTargetStatus] = useState("loading");
   const [reRender, setReRender] = useState(false);
   const [open, setOpen] = useState(false);
 
   const { postStatus, posts } = useContext(PostContext);
+  const [values, setValues] = useState(initialState);
+
+  const onChange = (event) => {
+    setValues({ ...values, [event.target.name]: event.target.value });
+  };
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    console.log(values);
+    fetch(`https://catch-up-api.herokuapp.com/newpost`, {
+      method: "POST",
+      body: JSON.stringify({
+        userId: currentUser._id,
+        username: currentUser.username,
+        location: values.location,
+        sharedWith: values.sharedWith,
+        title: values.title,
+        body: values.body,
+        public: values.public,
+        startTime: values.startTime,
+        endTime: values.endTime,
+        now: values.now,
+        category: values.category,
+      }),
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log("error:", error);
+      });
+  };
 
   const friendRequest = () => {
     fetch(`https://catch-up-api.herokuapp.com/friendrequest`, {
@@ -39,7 +88,6 @@ const ProfilePage = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         setReRender(!reRender);
       })
       .catch((error) => {
@@ -62,7 +110,6 @@ const ProfilePage = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         setReRender(!reRender);
       })
       .catch((error) => {
@@ -112,15 +159,13 @@ const ProfilePage = () => {
     );
   }
 
-  console.log("user", user);
-  console.log("target", targetUser);
-  console.log("current", currentUser);
+  // console.log("user", user);
+  // console.log("target", targetUser);
+  // console.log("current", currentUser);
 
   const friendStatus = targetUser?.friends?.find((friend) => {
     return friend?.friendId === currentUser?._id;
   });
-
-  console.log("status", friendStatus);
 
   return (
     <Wrapper>
@@ -195,10 +240,12 @@ const ProfilePage = () => {
 
       {/* start of post/map form */}
       {userLocation && open && (
-        <Container>
+        <FormContainer>
           <MapWrapper>
             <GoogleMapReact
-              onClick={(e) => setClickedLocation({ lat: e.lat, lng: e.lng })}
+              onClick={(e) => {
+                setValues({ ...values, location: { lat: e.lat, lng: e.lng } });
+              }}
               defaultZoom={16}
               defaultCenter={userLocation}
               bootstrapURLKeys={{
@@ -206,16 +253,84 @@ const ProfilePage = () => {
               }}
               yesIWantToUseGoogleMapApiInternals
             >
-              {clickedLocation && (
+              {values.location && (
                 <StyledIcon
-                  lat={clickedLocation.lat}
-                  lng={clickedLocation.lng}
+                  lat={values.location.lat}
+                  lng={values.location.lng}
                   text="My Marker"
                 />
               )}
             </GoogleMapReact>
           </MapWrapper>
-        </Container>
+          <Form onSubmit={onSubmit}>
+            <Label>Title</Label>
+            <Input
+              required
+              name="title"
+              value={values.title}
+              onChange={onChange}
+              defaultValue="Title"
+            />
+
+            <Label>Body</Label>
+            <Input
+              name="body"
+              value={values.body}
+              onChange={onChange}
+              defaultValue="Body"
+            />
+
+            <Label>Share with</Label>
+            <Input
+              name="sharedWith"
+              value={values.sharedWith}
+              onChange={onChange}
+              defaultValue=""
+            />
+
+            <Label>Public</Label>
+            <Input
+              type="checkbox"
+              name="public"
+              value={values.public}
+              onChange={(e) => {
+                setValues({ ...values, public: e.target.checked });
+              }}
+            />
+
+            <Label>Start Time</Label>
+            <Input
+              disabled={values.now}
+              name="startTime"
+              value={values.startTime}
+              onChange={onChange}
+              defaultValue=""
+            />
+
+            <Label>Now?</Label>
+            <Input
+              type="checkbox"
+              name="now"
+              value={values.now}
+              onChange={(e) => {
+                setValues({ ...values, now: e.target.checked });
+              }}
+            />
+
+            <Label>End Time</Label>
+            <Input
+              name="endTime"
+              value={values.endTime}
+              onChange={onChange}
+              defaultValue=""
+            />
+
+            <Center>
+              <Button onClick={onSubmit}>Submit</Button>
+              <Button onClick={() => setOpen(false)}>Cancel</Button>
+            </Center>
+          </Form>
+        </FormContainer>
       )}
 
       {postStatus === "loaded" &&
@@ -249,6 +364,13 @@ const Container = styled.div`
   border-radius: 1em;
 `;
 
+const FormContainer = styled.div`
+  background-color: var(--clr-bg-alt);
+  margin: 2em 2em 2em 2em;
+  padding: 1em;
+  border-radius: 1em;
+`;
+
 const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -273,10 +395,6 @@ const Display = styled.div`
 
 const MapWrapper = styled.div`
   height: 400px;
-
-  @media only screen and (max-width: 600px) {
-    display: none;
-  }
 `;
 
 const StyledIcon = styled(FaMapMarkerAlt)`
@@ -291,7 +409,7 @@ const Button = styled.button`
   border-radius: 5px;
   padding: 10px 20px;
   font-size: 16px;
-  margin: 15px 0;
+  margin: 15px;
 
   &:hover {
     transform: scale(1.1);
@@ -303,6 +421,43 @@ const Button = styled.button`
   }
 `;
 
-const Ul = styled.ul``;
+const Form = styled.form`
+  max-width: 500px;
+  margin: 0 auto;
+`;
 
-const Li = styled.li``;
+const Input = styled.input`
+  display: block;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid var(--clr-fg-alt);
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--clr-fg-alt);
+  background-color: var(--clr-bg);
+
+  &:disabled {
+    color: var(--shadow);
+    background-color: grey;
+  }
+`;
+
+const Label = styled.label`
+  line-height: 2;
+  text-align: left;
+  display: block;
+  margin-bottom: 3px;
+  margin-top: 20px;
+  color: white;
+  font-size: 14px;
+  font-weight: 200;
+  color: var(--clr-fg-alt);
+`;
+
+const Center = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
