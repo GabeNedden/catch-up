@@ -19,7 +19,12 @@ const ProfilePage = () => {
   const friendRequest = () => {
     fetch(`https://catch-up-api.herokuapp.com/friendrequest`, {
       method: "POST",
-      body: JSON.stringify({ userId: currentUser._id, targetUserId: userId }),
+      body: JSON.stringify({
+        userId: currentUser._id,
+        username: currentUser.username,
+        targetUserId: userId,
+        targetUsername: targetUser.username,
+      }),
       headers: {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",
@@ -76,6 +81,10 @@ const ProfilePage = () => {
     );
   }
 
+  console.log("user", user);
+  console.log("target", targetUser);
+  console.log("current", currentUser);
+
   return (
     <Wrapper>
       {targetStatus === "loaded" ? (
@@ -90,7 +99,12 @@ const ProfilePage = () => {
             <Display>{targetUser.username}</Display>
             <Display>Catch Ups: 5</Display>
             <Display>Friends: 5</Display>
-            <Button onClick={friendRequest}>Add Friend</Button>
+            {targetUser._id !== currentUser._id && (
+              <Button onClick={friendRequest}>Add Friend</Button>
+            )}
+            {targetUser._id === currentUser._id && (
+              <Display>This is your page!</Display>
+            )}
           </Column>
         </Row>
       ) : null}

@@ -74,6 +74,7 @@ const PostModal = ({ currentUser }) => {
           <Form onSubmit={onSubmit}>
             <Label>Title</Label>
             <Input
+              required
               name="title"
               value={values.title}
               onChange={onChange}
