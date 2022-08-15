@@ -15,6 +15,7 @@ const ProfilePage = () => {
   const [clickedLocation, setClickedLocation] = useState(null);
   const [targetUser, setTargetUser] = useState(null);
   const [targetStatus, setTargetStatus] = useState("loading");
+  const [reRender, setReRender] = useState(false);
 
   const friendRequest = () => {
     fetch(`https://catch-up-api.herokuapp.com/friendrequest`, {
@@ -33,6 +34,30 @@ const ProfilePage = () => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
+        setReRender(!reRender);
+      })
+      .catch((error) => {
+        console.log("error:", error);
+      });
+  };
+
+  const updateFriend = (update) => {
+    fetch(`https://catch-up-api.herokuapp.com/updatefriend`, {
+      method: "POST",
+      body: JSON.stringify({
+        userId: currentUser._id,
+        targetUserId: userId,
+        statusUpdate: update,
+      }),
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        setReRender(!reRender);
       })
       .catch((error) => {
         console.log("error:", error);
@@ -70,7 +95,7 @@ const ProfilePage = () => {
         console.log("error:", error);
         setTargetStatus("error");
       });
-  }, []);
+  }, [reRender]);
 
   if (!isAuthenticated) {
     return (
@@ -85,6 +110,12 @@ const ProfilePage = () => {
   console.log("target", targetUser);
   console.log("current", currentUser);
 
+  const friendStatus = targetUser?.friends?.find((friend) => {
+    return friend?.friendId === currentUser?._id;
+  });
+
+  console.log("status", friendStatus);
+
   return (
     <Wrapper>
       {targetStatus === "loaded" ? (
@@ -98,17 +129,54 @@ const ProfilePage = () => {
           <Column>
             <Display>{targetUser.username}</Display>
             <Display>Catch Ups: 5</Display>
-            <Display>Friends: 5</Display>
-            {targetUser._id !== currentUser._id && (
-              <Button onClick={friendRequest}>Add Friend</Button>
-            )}
-            {targetUser._id === currentUser._id && (
+            <Display>
+              Friends:{" "}
+              {
+                targetUser.friends.filter(
+                  (friend) => friend.status === "Confirmed"
+                ).length
+              }
+            </Display>
+            {/* user is looking at another users account */}
+            {targetUser?._id !== currentUser?._id &&
+              // some friend status exists
+              (friendStatus ? (
+                friendStatus.status === "Confirmed" ? (
+                  <Button disabled>Friends</Button>
+                ) : (
+                  <>
+                    <Button
+                      onClick={() => {
+                        if (friendStatus.initiated) {
+                          updateFriend("Confirmed");
+                        }
+                      }}
+                      disabled={!friendStatus.initiated}
+                    >
+                      {friendStatus.initiated
+                        ? "Accept Request"
+                        : friendStatus.status}
+                    </Button>
+                    <Display>
+                      {friendStatus.initiated
+                        ? "This user sent you a friend request!"
+                        : `Your friend request is pending`}
+                    </Display>
+                  </>
+                )
+              ) : (
+                // no friend status exists
+                <Button onClick={friendRequest}>Add Friend</Button>
+              ))}
+            {/* user is looking at their own page */}
+            {targetUser?._id === currentUser?._id && (
               <Display>This is your page!</Display>
             )}
           </Column>
         </Row>
       ) : null}
 
+      {/* start of post/map form */}
       <div style={{ padding: "1em 0" }} />
       {userLocation && (
         <MapWrapper>
@@ -191,5 +259,13 @@ const Button = styled.button`
   padding: 10px 20px;
   font-size: 16px;
   margin: 15px 0;
-  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:disabled {
+    cursor: default;
+    transform: none;
+  }
 `;
