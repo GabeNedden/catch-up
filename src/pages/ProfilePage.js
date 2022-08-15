@@ -160,7 +160,7 @@ const ProfilePage = () => {
                     <Display>
                       {friendStatus.initiated
                         ? "This user sent you a friend request!"
-                        : `Your friend request is pending`}
+                        : `Your friend request is ${friendStatus.status}`}
                     </Display>
                   </>
                 )
