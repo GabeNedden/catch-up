@@ -1,13 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-export const AllUsersContext = createContext(null);
+export const GroupContext = createContext(null);
 
-export const AllUsersProvider = ({ children }) => {
-  const [allUsers, setAllUsers] = useState(null);
-  const [allUsersStatus, setAllUsersStatus] = useState("loading");
+export const GroupProvider = ({ children }) => {
+  const [groups, setGroups] = useState(null);
+  const [groupsStatus, setGroupsStatus] = useState("loading");
 
   useEffect(() => {
-    fetch(`https://catch-up-api.herokuapp.com/users`, {
+    fetch(`https://catch-up-api.herokuapp.com/groups`, {
       method: "GET",
       headers: {
         Accept: "application/json, text/plain, */*",
@@ -16,23 +16,23 @@ export const AllUsersProvider = ({ children }) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        setAllUsers(res.data);
-        setAllUsersStatus("loaded");
+        setGroups(res.data);
+        setGroupsStatus("loaded");
       })
       .catch((error) => {
         console.log("error:", error);
-        setAllUsersStatus("error");
+        setGroupsStatus("error");
       });
   }, []);
 
   return (
-    <AllUsersContext.Provider
+    <GroupContext.Provider
       value={{
-        allUsers,
-        allUsersStatus,
+        groups,
+        groupsStatus,
       }}
     >
       {children}
-    </AllUsersContext.Provider>
+    </GroupContext.Provider>
   );
 };

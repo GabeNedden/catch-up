@@ -4,14 +4,22 @@ import Post from "../components/Post";
 import { PostContext } from "../contexts/PostContext";
 import { v4 as uuidv4 } from "uuid";
 import SearchBar from "../components/SearchBar";
+import { AllUsersContext } from "../contexts/AllUsersContext";
+import { GroupContext } from "../contexts/GroupContext";
 
 const MainFeed = () => {
   const { postStatus, posts } = useContext(PostContext);
+  const { allUsers, allUsersStatus } = useContext(AllUsersContext);
+  const { groups, groupsStatus } = useContext(GroupContext);
 
   return (
     <Wrapper>
       <Center>
-        <SearchBar />
+        <SearchBar
+          users={allUsersStatus === "loaded" ? allUsers : false}
+          posts={postStatus === "loaded" ? posts : false}
+          groups={groupsStatus === "loaded" ? groups : false}
+        />
       </Center>
       <div style={{ padding: "1em 0" }} />
       {postStatus === "loaded" ? (
