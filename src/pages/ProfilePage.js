@@ -179,7 +179,9 @@ const ProfilePage = () => {
               colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
             />
             <Column>
-              <Display>{targetUser.username}</Display>
+              <Display style={{ fontWeight: 700 }}>
+                {targetUser.username}
+              </Display>
               <Display>
                 Catch Ups:{" "}
                 {
@@ -263,21 +265,14 @@ const ProfilePage = () => {
             </GoogleMapReact>
           </MapWrapper>
           <Form onSubmit={onSubmit}>
-            <Label>Title</Label>
+            <Label>Event</Label>
             <Input
               required
               name="title"
+              placeholder="What are you up to?"
               value={values.title}
               onChange={onChange}
               defaultValue="Title"
-            />
-
-            <Label>Body</Label>
-            <Input
-              name="body"
-              value={values.body}
-              onChange={onChange}
-              defaultValue="Body"
             />
 
             <Label>Share with</Label>

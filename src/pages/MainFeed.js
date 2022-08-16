@@ -59,7 +59,7 @@ const Header = styled.div`
   justify-content: center;
   align-items: center;
   margin: 15px 0 0 0;
-  color: #fff;
+  color: var(--clr-primary);
 
   @media only screen and (min-width: 600px) {
     display: none;

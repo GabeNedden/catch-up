@@ -12,11 +12,11 @@
 }
 
 .light {
-  --clr-bg: #2a2f4c;
-  --clr-bg-alt: #fff;
+  --clr-bg: #fff;
+  --clr-bg-alt: #90a4ae;
   --clr-fg: #212121;
   --clr-fg-alt: #eceff1;
-  --clr-primary: #16453f;
+  --clr-primary: #23283e;
   --clr-border: #16453f;
   --clr-white: #fff;
   --shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;

@@ -11,7 +11,7 @@ const Post = ({ post }) => {
   console.log(post);
   return (
     <Wrapper>
-      <Row>
+      <Row style={{ marginBottom: "15px" }}>
         <Avatar
           size={40}
           name={post.username}
@@ -37,8 +37,6 @@ const Post = ({ post }) => {
           />
         </GoogleMapReact>
       </MapWrapper>
-
-      <Display>{post.body}</Display>
     </Wrapper>
   );
 };
@@ -48,7 +46,8 @@ export default Post;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: var(--clr-bg-alt);
+  background-color: var(--clr-bg);
+  border: 3px solid var(--clr-bg-alt);
   margin: 0 2em 2em 2em;
   padding: 1em;
   height: 30em;
@@ -66,6 +65,8 @@ const Row = styled.div`
 `;
 
 const StyledLink = styled(Link)`
+  font-weight: 700;
+
   &:hover {
     color: var(--clr-fg-alt);
   }
@@ -77,6 +78,7 @@ const Display = styled.div`
 
 const MapWrapper = styled.div`
   height: 400px;
+  margin-bottom: 15px;
 
   @media only screen and (max-width: 600px) {
     height: 300px;

@@ -101,7 +101,7 @@ const Header = styled(Link)`
   justify-content: center;
   align-items: center;
   margin: 0 0 0 20px;
-  color: var(--clr-fg);
+  color: var(--clr-primary);
 `;
 
 const Li = styled.li`
