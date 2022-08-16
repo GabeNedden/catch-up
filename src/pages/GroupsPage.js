@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
 import { GroupContext } from "../contexts/GroupContext";
+import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 
 const GroupsPage = () => {
   const initialState = {
@@ -47,15 +48,7 @@ const GroupsPage = () => {
   return (
     <Wrapper>
       <Header className="lobster">Catch Up!</Header>
-      <SubHeader>
-        <Button
-          onClick={() => {
-            setGroupFormOpen(!groupFormOpen);
-          }}
-        >
-          New Group?
-        </Button>
-      </SubHeader>
+      <SubHeader></SubHeader>
 
       {groupFormOpen && (
         <FormContainer>
@@ -93,7 +86,20 @@ const GroupsPage = () => {
       {groupsStatus === "loaded" && currentUser && (
         <>
           <Center>
-            <Display>Your Groups</Display>
+            <Display style={{ marginTop: 10 }}>
+              Your Groups{" "}
+              <SmallButton
+                onClick={() => {
+                  setGroupFormOpen(!groupFormOpen);
+                }}
+              >
+                {groupFormOpen ? (
+                  <AiOutlineMinusCircle />
+                ) : (
+                  <AiOutlinePlusCircle />
+                )}
+              </SmallButton>
+            </Display>
           </Center>
 
           <Container>
@@ -278,4 +284,8 @@ const StyledLink = styled(Link)`
     cursor: pointer;
     color: var(--clr-fg-alt);
   }
+`;
+
+const SmallButton = styled.button`
+  background-color: inherit;
 `;

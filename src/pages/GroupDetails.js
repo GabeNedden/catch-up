@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
+import BackButton from "../components/BackButton";
 import Post from "../components/Post";
 import { GroupContext } from "../contexts/GroupContext";
 import { PostContext } from "../contexts/PostContext";
@@ -12,6 +13,9 @@ const GroupDetails = () => {
 
   return (
     <Wrapper>
+      <Link to="/groups">
+        <BackButton />
+      </Link>
       <Header className="lobster">Catch Up!</Header>
       {groupsStatus === "loaded" &&
         groups
@@ -21,11 +25,13 @@ const GroupDetails = () => {
           .map((group) => {
             return (
               <>
-                <Container>
-                  <Center>
-                    <Display>{group.name}</Display>
-                  </Center>
-                </Container>
+                <Center>
+                  <Container style={{ width: "80%" }}>
+                    <Center>
+                      <Display>{group.name}</Display>
+                    </Center>
+                  </Container>
+                </Center>
                 <Row>
                   <Button>Join Group</Button>
                   <Button>Share Catch Up!</Button>
