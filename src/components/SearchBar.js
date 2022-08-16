@@ -174,7 +174,7 @@ const Container = styled.div`
 `;
 
 const Input = styled.input`
-  width: 80%;
+  width: 100%;
   margin-right: 10px;
   border: var(--clr-primary) 1px solid;
   border-radius: 4px;

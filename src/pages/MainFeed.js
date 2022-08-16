@@ -8,20 +8,13 @@ import { AllUsersContext } from "../contexts/AllUsersContext";
 import { GroupContext } from "../contexts/GroupContext";
 
 const MainFeed = () => {
-  const { postStatus, posts } = useContext(PostContext);
   const { allUsers, allUsersStatus } = useContext(AllUsersContext);
+  const { postStatus, posts } = useContext(PostContext);
   const { groups, groupsStatus } = useContext(GroupContext);
 
   return (
     <Wrapper>
       <Header className="lobster">Catch Up!</Header>
-      {/* <Center>
-        <SearchBar
-          users={allUsersStatus === "loaded" ? allUsers : false}
-          posts={postStatus === "loaded" ? posts : false}
-          groups={groupsStatus === "loaded" ? groups : false}
-        />
-      </Center> */}
 
       <div style={{ padding: "1em 0" }} />
       {postStatus === "loaded" ? (
