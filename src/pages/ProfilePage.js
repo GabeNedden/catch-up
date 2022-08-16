@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useContext } from "react";
@@ -7,10 +8,9 @@ import { v4 as uuidv4 } from "uuid";
 
 import Post from "../components/Post";
 import Avatar from "boring-avatars";
-import GoogleMapReact from "google-map-react";
+import GoogleMapReact, { contextType } from "google-map-react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { PostContext } from "../contexts/PostContext";
-import PostModal from "../components/PostModal";
 
 const ProfilePage = () => {
   const initialState = {
@@ -148,7 +148,7 @@ const ProfilePage = () => {
         console.log("error:", error);
         setTargetStatus("error");
       });
-  }, [reRender]);
+  }, [reRender, userId]);
 
   if (!isAuthenticated) {
     return (
@@ -160,7 +160,7 @@ const ProfilePage = () => {
   }
 
   // console.log("user", user);
-  // console.log("target", targetUser);
+  console.log("target", targetUser);
   // console.log("current", currentUser);
 
   const friendStatus = targetUser?.friends?.find((friend) => {
@@ -333,18 +333,80 @@ const ProfilePage = () => {
         </FormContainer>
       )}
 
-      {postStatus === "loaded" &&
-      posts.filter((post) => {
-        return post.owner === userId;
-      }).length
-        ? posts
-            .filter((post) => {
-              return post.owner === userId;
-            })
-            .map((post) => {
-              return <Post post={post} key={uuidv4()} />;
-            })
-        : "This User has no public posts"}
+      <Row>
+        {targetUser?._id === currentUser?._id ? (
+          <PostColumn>
+            <Container>
+              <Display>Friends</Display>
+              <Ul>
+                {currentUser.friends.map((friend) => {
+                  return (
+                    <Li>
+                      <StyledLink to={`/profile/${friend.friendId}`}>
+                        {friend.friendUsername}
+                      </StyledLink>
+                    </Li>
+                  );
+                })}
+              </Ul>
+            </Container>
+            <Container>
+              <Display>Circles</Display>
+              <Ul>
+                {currentUser.circles.map((circle) => {
+                  return <Li>{circle}</Li>;
+                })}
+              </Ul>
+            </Container>
+            <Container>
+              <Display>Groups</Display>
+            </Container>
+          </PostColumn>
+        ) : friendStatus && friendStatus.status === "Confirmed" ? (
+          <PostColumn>
+            <Container>
+              <Display>Mutual Friends</Display>
+              <Ul>
+                {targetUser.friends
+                  .filter((friend) => {
+                    return currentUser.friends.some(
+                      (el) => el.friendId === friend.friendId
+                    );
+                  })
+                  .map((friend) => {
+                    return (
+                      <Li>
+                        <StyledLink to={`/profile/${friend.friendId}`}>
+                          {friend.friendUsername}
+                        </StyledLink>
+                      </Li>
+                    );
+                  })}
+              </Ul>
+            </Container>
+            <Container>
+              <Display>Mutual Circles</Display>
+            </Container>
+            <Container>
+              <Display>Mutual Groups</Display>
+            </Container>
+          </PostColumn>
+        ) : null}
+        <PostColumn>
+          {postStatus === "loaded" &&
+          posts.filter((post) => {
+            return post.owner === userId;
+          }).length
+            ? posts
+                .filter((post) => {
+                  return post.owner === userId;
+                })
+                .map((post) => {
+                  return <Post post={post} key={uuidv4()} />;
+                })
+            : "This User has no public posts"}
+        </PostColumn>
+      </Row>
     </Wrapper>
   );
 };
@@ -378,19 +440,26 @@ const Row = styled.div`
   & > * {
     margin: 1em;
   }
+
+  @media only screen and (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 const Column = styled.div`
   display: flex;
   flex-direction: column;
+`;
 
-  & > * {
-    margin: 2px;
-  }
+const PostColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `;
 
 const Display = styled.div`
   color: var(--clr-fg);
+  margin: 2px;
 `;
 
 const MapWrapper = styled.div`
@@ -460,4 +529,17 @@ const Center = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const Ul = styled.ul``;
+
+const Li = styled.li`
+  margin: 0 0 0 5px;
+`;
+
+const StyledLink = styled(Link)`
+  &:hover {
+    cursor: pointer;
+    color: var(--clr-fg-alt);
+  }
 `;

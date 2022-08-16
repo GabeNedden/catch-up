@@ -27,9 +27,6 @@ const Navbar = () => {
         ) : null}
 
         <li>
-          <Tab to="/">Friends</Tab>
-        </li>
-        <li>
           <Tab to="/">Groups</Tab>
         </li>
       </Ul>
