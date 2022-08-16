@@ -7,7 +7,6 @@ const MapFeed = () => {
     <Wrapper>
       <Header className="lobster">Catch Up!</Header>
       <Center>
-        <Display>Search</Display>
         <SearchBar />
       </Center>
     </Wrapper>

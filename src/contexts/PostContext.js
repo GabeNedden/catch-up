@@ -34,8 +34,6 @@ export const PostProvider = ({ children }) => {
     }
   }, [currentUser]);
 
-  console.log(posts);
-
   return (
     <PostContext.Provider
       value={{

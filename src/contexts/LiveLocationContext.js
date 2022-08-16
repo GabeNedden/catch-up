@@ -22,7 +22,6 @@ export const LiveLocationProvider = ({ children }) => {
         timeout: 5000,
         maximumAge: 0,
       });
-      console.log("UPDATED LOCATION", liveLocation);
     }, 5000);
 
     return () => {

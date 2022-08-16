@@ -47,32 +47,6 @@ export const UserProvider = ({ children }) => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   let userLocationTimer = setTimeout(() => {
-  //     const success = (pos) => {
-  //       setUserLocation({
-  //         lat: pos.coords.latitude,
-  //         lng: pos.coords.longitude,
-  //       });
-  //     };
-
-  //     const error = (err) => {
-  //       console.warn(`ERROR(${err.code}): ${err.message}`);
-  //     };
-
-  //     navigator.geolocation.getCurrentPosition(success, error, {
-  //       enableHighAccuracy: true,
-  //       timeout: 5000,
-  //       maximumAge: 0,
-  //     });
-  //     console.log("UPDATED LOCATION", userLocation);
-  //   }, 5000);
-
-  //   return () => {
-  //     clearTimeout(userLocationTimer);
-  //   };
-  // });
-
   return (
     <UserContext.Provider
       value={{

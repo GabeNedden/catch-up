@@ -2,12 +2,10 @@ import { useContext, useState } from "react";
 import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
 import { PostContext } from "../contexts/PostContext";
-import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-import { AiOutlinePlusCircle, AiFillMinusCircle } from "react-icons/ai";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BiSearchAlt } from "react-icons/bi";
 import { RiAccountPinCircleLine, RiHomeLine } from "react-icons/ri";
-import { TbMap2 } from "react-icons/tb";
 import { HiOutlineUserGroup } from "react-icons/hi";
 
 import LoginButton from "./LoginButton";

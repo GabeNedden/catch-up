@@ -8,7 +8,6 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 /* global google */
 
 const Post = ({ post }) => {
-  console.log(post);
   return (
     <Wrapper>
       <Row style={{ marginBottom: "15px" }}>
@@ -16,7 +15,7 @@ const Post = ({ post }) => {
           size={40}
           name={post.username}
           variant="beam"
-          colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
+          colors={["#E1523D", "#FFAE00", "#FF6B1A", "#006663", "#00B3AD"]}
         />
         <StyledLink to={`/profile/${post.owner}`}>{post.username}</StyledLink>
       </Row>

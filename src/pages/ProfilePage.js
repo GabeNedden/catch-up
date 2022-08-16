@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { PostContext } from "../contexts/PostContext";
+import { GroupContext } from "../contexts/GroupContext";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
@@ -32,6 +33,7 @@ const ProfilePage = () => {
   const [targetStatus, setTargetStatus] = useState("loading");
   const [reRender, setReRender] = useState(false);
   const { postFormOpen, setPostFormOpen } = useContext(PostContext);
+  const { groups, groupsStatus } = useContext(GroupContext);
 
   const { postStatus, posts } = useContext(PostContext);
   const [values, setValues] = useState(initialState);
@@ -42,7 +44,7 @@ const ProfilePage = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log(values);
+
     fetch(`https://catch-up-api.herokuapp.com/newpost`, {
       method: "POST",
       body: JSON.stringify({
@@ -159,9 +161,9 @@ const ProfilePage = () => {
     );
   }
 
-  // console.log("user", user);
-  console.log("target", targetUser);
-  // console.log("current", currentUser);
+  // // console.log("user", user);
+  // console.log("target", targetUser);
+  // // console.log("current", currentUser);
 
   const friendStatus = targetUser?.friends?.find((friend) => {
     return friend?.friendId === currentUser?._id;
@@ -176,7 +178,7 @@ const ProfilePage = () => {
               size={140}
               name={targetUser.username}
               variant="beam"
-              colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
+              colors={["#E1523D", "#FFAE00", "#FF6B1A", "#006663", "#00B3AD"]}
             />
             <Column>
               <Display style={{ fontWeight: 700 }}>
@@ -364,6 +366,22 @@ const ProfilePage = () => {
               </ContainerRev>
               <ContainerRev>
                 <Display>Groups</Display>
+                <Ul>
+                  {groupsStatus === "loaded" &&
+                    groups
+                      .filter((check) => {
+                        return check.members.some(
+                          (el) => el.userId === currentUser._id
+                        );
+                      })
+                      .map((group) => {
+                        return (
+                          <StyledLink to={`/group/${group._id}`}>
+                            {group.name}
+                          </StyledLink>
+                        );
+                      })}
+                </Ul>
               </ContainerRev>
             </PostColumn>
           ) : friendStatus && friendStatus.status === "Confirmed" ? (

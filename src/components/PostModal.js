@@ -26,7 +26,6 @@ const PostModal = ({ currentUser }) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log(values);
   };
 
   const success = (pos) => {
