@@ -7,6 +7,8 @@ export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [status, setStatus] = useState("loading");
 
+  const [userLocation, setUserLocation] = useState(null);
+
   useEffect(() => {
     if (user) {
       fetch(`https://catch-up-api.herokuapp.com/login`, {
@@ -29,6 +31,48 @@ export const UserProvider = ({ children }) => {
     }
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    const success = (pos) => {
+      setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+    };
+
+    const error = (err) => {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+    };
+
+    navigator.geolocation.getCurrentPosition(success, error, {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   let userLocationTimer = setTimeout(() => {
+  //     const success = (pos) => {
+  //       setUserLocation({
+  //         lat: pos.coords.latitude,
+  //         lng: pos.coords.longitude,
+  //       });
+  //     };
+
+  //     const error = (err) => {
+  //       console.warn(`ERROR(${err.code}): ${err.message}`);
+  //     };
+
+  //     navigator.geolocation.getCurrentPosition(success, error, {
+  //       enableHighAccuracy: true,
+  //       timeout: 5000,
+  //       maximumAge: 0,
+  //     });
+  //     console.log("UPDATED LOCATION", userLocation);
+  //   }, 5000);
+
+  //   return () => {
+  //     clearTimeout(userLocationTimer);
+  //   };
+  // });
+
   return (
     <UserContext.Provider
       value={{
@@ -36,6 +80,8 @@ export const UserProvider = ({ children }) => {
         isAuthenticated,
         currentUser,
         status,
+        userLocation,
+        setUserLocation,
       }}
     >
       {children}

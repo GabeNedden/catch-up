@@ -26,8 +26,8 @@ const ProfilePage = () => {
   };
 
   const { userId } = useParams();
-  const { user, currentUser, isAuthenticated } = useContext(UserContext);
-  const [userLocation, setUserLocation] = useState(null);
+  const { user, currentUser, isAuthenticated, userLocation, setUserLocation } =
+    useContext(UserContext);
   const [targetUser, setTargetUser] = useState(null);
   const [targetStatus, setTargetStatus] = useState("loading");
   const [reRender, setReRender] = useState(false);
@@ -251,7 +251,10 @@ const ProfilePage = () => {
           <MapWrapper>
             <GoogleMapReact
               onClick={(e) => {
-                setValues({ ...values, location: { lat: e.lat, lng: e.lng } });
+                setValues({
+                  ...values,
+                  location: { lat: e.lat, lng: e.lng },
+                });
               }}
               defaultZoom={16}
               defaultCenter={userLocation}
