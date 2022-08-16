@@ -203,7 +203,7 @@ const ProfilePage = () => {
                 // some friend status exists
                 (friendStatus ? (
                   friendStatus.status === "Confirmed" ? (
-                    <Button disabled>Friend</Button>
+                    <Button disabled>You are Friends</Button>
                   ) : (
                     <>
                       <Button

@@ -15,6 +15,9 @@ const MainFeed = () => {
   return (
     <Wrapper>
       <Header className="lobster">Catch Up!</Header>
+      <Center>
+        <SearchBar />
+      </Center>
 
       <div style={{ padding: "1em 0" }} />
       {postStatus === "loaded" ? (

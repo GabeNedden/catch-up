@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { AllUsersContext } from "../contexts/AllUsersContext";
+import { PostContext } from "../contexts/PostContext";
+import { GroupContext } from "../contexts/GroupContext";
 
-const SearchBar = ({ groups, posts, users }) => {
+const SearchBar = () => {
+  const { allUsers, allUsersStatus } = useContext(AllUsersContext);
+  const { postStatus, posts } = useContext(PostContext);
+  const { groups, groupsStatus } = useContext(GroupContext);
   const [value, setValue] = useState("");
 
   const handleSelect = (suggestion) => {
@@ -13,6 +19,7 @@ const SearchBar = ({ groups, posts, users }) => {
     <Wrapper>
       <Container>
         <Input
+          placeholder="Search for friends, groups, or Catch Ups!"
           type="text"
           value={value}
           onChange={(event) => {
@@ -29,126 +36,144 @@ const SearchBar = ({ groups, posts, users }) => {
       {value.length > 1 && (
         <>
           <List>
-            {users
-              .filter((result) => {
-                return (
-                  result.username.toLowerCase().indexOf(value.toLowerCase()) >=
-                  0
-                );
-              })
-              .map((suggestion) => {
-                let boldSection = suggestion.username.slice(
-                  suggestion.username
-                    .toLowerCase()
-                    .indexOf(value.toLowerCase()) + value.length
-                );
-                let frontSection = suggestion.username.slice(
-                  0,
-                  suggestion.username
-                    .toLowerCase()
-                    .indexOf(value.toLowerCase()) + value.length
-                );
-                return (
-                  <Suggestion
-                    to={`/profile/${suggestion._id}`}
-                    key={suggestion.id}
-                  >
-                    <span>
-                      {frontSection}
-                      <Prediction>{boldSection}</Prediction>
-                    </span>
-                    <span style={{ fontStyle: "italic", fontSize: "14px" }}>
-                      {" "}
-                      in{" "}
-                      <span
-                        style={{ color: "green", textTransform: "capitalize" }}
-                      >
-                        Users
+            {allUsersStatus &&
+              allUsers
+                .filter((result) => {
+                  return (
+                    result.username
+                      .toLowerCase()
+                      .indexOf(value.toLowerCase()) >= 0
+                  );
+                })
+                .map((suggestion) => {
+                  let boldSection = suggestion.username.slice(
+                    suggestion.username
+                      .toLowerCase()
+                      .indexOf(value.toLowerCase()) + value.length
+                  );
+                  let frontSection = suggestion.username.slice(
+                    0,
+                    suggestion.username
+                      .toLowerCase()
+                      .indexOf(value.toLowerCase()) + value.length
+                  );
+                  return (
+                    <Suggestion
+                      to={`/profile/${suggestion._id}`}
+                      key={suggestion.id}
+                    >
+                      <span>
+                        {frontSection}
+                        <Prediction>{boldSection}</Prediction>
                       </span>
-                    </span>
-                  </Suggestion>
-                );
-              })}
+                      <span style={{ fontStyle: "italic", fontSize: "14px" }}>
+                        {" "}
+                        in{" "}
+                        <span
+                          style={{
+                            color: "green",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          Users
+                        </span>
+                      </span>
+                    </Suggestion>
+                  );
+                })}
           </List>
 
           <List>
-            {posts
-              .filter((result) => {
-                return (
-                  result.title.toLowerCase().indexOf(value.toLowerCase()) >= 0
-                );
-              })
-              .map((suggestion) => {
-                let boldSection = suggestion.title.slice(
-                  suggestion.title.toLowerCase().indexOf(value.toLowerCase()) +
-                    value.length
-                );
-                let frontSection = suggestion.title.slice(
-                  0,
-                  suggestion.title.toLowerCase().indexOf(value.toLowerCase()) +
-                    value.length
-                );
-                return (
-                  <Suggestion
-                    to={`/post/${suggestion._id}`}
-                    key={suggestion.id}
-                  >
-                    <span>
-                      {frontSection}
-                      <Prediction>{boldSection}</Prediction>
-                    </span>
-                    <span style={{ fontStyle: "italic", fontSize: "14px" }}>
-                      {" "}
-                      in{" "}
-                      <span
-                        style={{ color: "green", textTransform: "capitalize" }}
-                      >
-                        Posts
+            {postStatus &&
+              posts
+                .filter((result) => {
+                  return (
+                    result.title.toLowerCase().indexOf(value.toLowerCase()) >= 0
+                  );
+                })
+                .map((suggestion) => {
+                  let boldSection = suggestion.title.slice(
+                    suggestion.title
+                      .toLowerCase()
+                      .indexOf(value.toLowerCase()) + value.length
+                  );
+                  let frontSection = suggestion.title.slice(
+                    0,
+                    suggestion.title
+                      .toLowerCase()
+                      .indexOf(value.toLowerCase()) + value.length
+                  );
+                  return (
+                    <Suggestion
+                      to={`/post/${suggestion._id}`}
+                      key={suggestion.id}
+                    >
+                      <span>
+                        {frontSection}
+                        <Prediction>{boldSection}</Prediction>
                       </span>
-                    </span>
-                  </Suggestion>
-                );
-              })}
+                      <span style={{ fontStyle: "italic", fontSize: "14px" }}>
+                        {" "}
+                        in{" "}
+                        <span
+                          style={{
+                            color: "green",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          Posts
+                        </span>
+                      </span>
+                    </Suggestion>
+                  );
+                })}
           </List>
 
           <List>
-            {groups
-              .filter((result) => {
-                return (
-                  result.name.toLowerCase().indexOf(value.toLowerCase()) >= 0
-                );
-              })
-              .map((suggestion) => {
-                let boldSection = suggestion.name.slice(
-                  suggestion.name.toLowerCase().indexOf(value.toLowerCase()) +
-                    value.length
-                );
-                let frontSection = suggestion.name.slice(
-                  0,
-                  suggestion.name.toLowerCase().indexOf(value.toLowerCase()) +
-                    value.length
-                );
-                return (
-                  <Suggestion
-                    to={`/group/${suggestion._id}`}
-                    key={suggestion._id}
-                  >
-                    <span>
-                      {frontSection}
-                      <Prediction>{boldSection}</Prediction>
-                    </span>
-                    <span style={{ fontStyle: "italic", fontSize: "14px" }}>
-                      {" "}
-                      in{" "}
-                      <span
-                        style={{ color: "green", textTransform: "capitalize" }}
+            {groupsStatus &&
+              groups
+                .filter((result) => {
+                  return (
+                    result.name.toLowerCase().indexOf(value.toLowerCase()) >= 0
+                  );
+                })
+                .map((suggestion) => {
+                  let boldSection = suggestion.name.slice(
+                    suggestion.name.toLowerCase().indexOf(value.toLowerCase()) +
+                      value.length
+                  );
+                  let frontSection = suggestion.name.slice(
+                    0,
+                    suggestion.name.toLowerCase().indexOf(value.toLowerCase()) +
+                      value.length
+                  );
+                  return (
+                    <>
+                      <Suggestion
+                        to={`/group/${suggestion._id}`}
+                        key={suggestion._id}
                       >
-                        Groups
-                      </span>
-                    </span>
-                  </Suggestion>
-                );
-              })}
+                        <span>
+                          {frontSection}
+                          <Prediction>{boldSection}</Prediction>
+                        </span>
+                        <span style={{ fontStyle: "italic", fontSize: "14px" }}>
+                          {" "}
+                          in{" "}
+                          <span
+                            style={{
+                              color: "green",
+                              textTransform: "capitalize",
+                            }}
+                          >
+                            Groups
+                          </span>
+                        </span>
+                      </Suggestion>
+                      <Suggestion to={"/groups"}>See All Groups</Suggestion>
+                    </>
+                  );
+                })}
           </List>
         </>
       )}
@@ -178,7 +203,7 @@ const Input = styled.input`
   margin-right: 10px;
   border: var(--clr-primary) 1px solid;
   border-radius: 4px;
-  padding: 2px;
+  padding: 8px;
   &:focus {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
       rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;

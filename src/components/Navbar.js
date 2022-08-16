@@ -8,6 +8,7 @@ import { UserContext } from "../contexts/UserContext";
 
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   const [{ themeName, toggleTheme }] = useContext(ThemeContext);

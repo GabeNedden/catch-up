@@ -1,24 +1,14 @@
 import { useContext } from "react";
 import styled from "styled-components";
 import SearchBar from "../components/SearchBar";
-import { AllUsersContext } from "../contexts/AllUsersContext";
-import { PostContext } from "../contexts/PostContext";
-import { GroupContext } from "../contexts/GroupContext";
 
 const MapFeed = () => {
-  const { allUsers, allUsersStatus } = useContext(AllUsersContext);
-  const { postStatus, posts } = useContext(PostContext);
-  const { groups, groupsStatus } = useContext(GroupContext);
   return (
     <Wrapper>
       <Header className="lobster">Catch Up!</Header>
       <Center>
         <Display>Search</Display>
-        <SearchBar
-          users={allUsersStatus === "loaded" ? allUsers : false}
-          posts={postStatus === "loaded" ? posts : false}
-          groups={groupsStatus === "loaded" ? groups : false}
-        />
+        <SearchBar />
       </Center>
     </Wrapper>
   );

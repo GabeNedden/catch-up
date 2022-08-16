@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
 import { GroupContext } from "../contexts/GroupContext";
@@ -9,6 +10,7 @@ const GroupsPage = () => {
     groupName: "",
     members: [],
   };
+  const [groupFormOpen, setGroupFormOpen] = useState(false);
   const [values, setValues] = useState(initialState);
   const { currentUser } = useContext(UserContext);
   const { groups, groupsStatus } = useContext(GroupContext);
@@ -45,45 +47,101 @@ const GroupsPage = () => {
   return (
     <Wrapper>
       <Header className="lobster">Catch Up!</Header>
-      <Center>
-        <Display>Groups</Display>
-      </Center>
+      <SubHeader>
+        <Button
+          onClick={() => {
+            setGroupFormOpen(!groupFormOpen);
+          }}
+        >
+          New Group?
+        </Button>
+      </SubHeader>
 
-      <FormContainer>
-        <Form>
-          <Label>New Group Name</Label>
-          <Input
-            name="groupName"
-            value={values.groupName}
-            onChange={onChange}
-            defaultValue=""
-          />
+      {groupFormOpen && (
+        <FormContainer>
+          <Form>
+            <Label>New Group Name</Label>
+            <Input
+              name="groupName"
+              value={values.groupName}
+              onChange={onChange}
+              defaultValue=""
+            />
 
-          <Label>Invite Admins</Label>
-          <Input
-            disabled
-            name="admins"
-            value={values.admins}
-            onChange={onChange}
-            defaultValue=""
-          />
+            <Label>Invite Admins</Label>
+            <Input
+              disabled
+              name="admins"
+              value={values.admins}
+              onChange={onChange}
+              defaultValue=""
+            />
 
-          <Label>Invite Members</Label>
-          <Input
-            disabled
-            name="members"
-            value={values.members}
-            onChange={onChange}
-            defaultValue=""
-          />
+            <Label>Invite Members</Label>
+            <Input
+              disabled
+              name="members"
+              value={values.members}
+              onChange={onChange}
+              defaultValue=""
+            />
 
-          <Button onClick={onSubmit}>Submit</Button>
-        </Form>
-      </FormContainer>
-      {groupsStatus &&
-        groups.map((group) => {
-          console.log(group);
-        })}
+            <Button onClick={onSubmit}>Submit</Button>
+          </Form>
+        </FormContainer>
+      )}
+      {groupsStatus === "loaded" && currentUser && (
+        <>
+          <Center>
+            <Display>Your Groups</Display>
+          </Center>
+
+          <Container>
+            {groups
+              .filter((check) => {
+                return check.members.some(
+                  (el) => el.userId === currentUser._id
+                );
+              })
+              .map((group) => {
+                return (
+                  <Row>
+                    <StyledLink to={`/group/${group._id}`}>
+                      {group.name}
+                    </StyledLink>
+                    <Info>members: {group.members.length}</Info>
+                  </Row>
+                );
+              })}
+          </Container>
+        </>
+      )}
+
+      {groupsStatus === "loaded" && currentUser && (
+        <>
+          <Center>
+            <Display>Public Groups</Display>
+          </Center>
+          <Container>
+            {groups
+              .filter((check) => {
+                return check.members.some(
+                  (el) => el.userId !== currentUser._id
+                );
+              })
+              .map((group) => {
+                return (
+                  <Row>
+                    <StyledLink to={`/group/${group._id}`}>
+                      {group.name}
+                    </StyledLink>
+                    <Info>members: {group.members.length}</Info>
+                  </Row>
+                );
+              })}
+          </Container>
+        </>
+      )}
     </Wrapper>
   );
 };
@@ -111,6 +169,25 @@ const Header = styled.div`
   }
 `;
 
+const SubHeader = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 25px;
+`;
+
+const Container = styled.div`
+  background-color: var(--clr-bg-alt);
+  margin: 2em 2em 2em 2em;
+  padding: 1em;
+  border-radius: 1em;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
 const Center = styled.div`
   width: 100%;
   display: flex;
@@ -123,7 +200,13 @@ const Display = styled.div`
   font-weight: 700;
   font-size: 22px;
   color: var(--clr-primary);
-  margin-bottom: 10px;
+`;
+
+const Info = styled.div`
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--clr-primary);
+  margin: 4px 0 0 15px;
 `;
 
 const FormContainer = styled.div`
@@ -183,5 +266,16 @@ const Button = styled.button`
   &:disabled {
     cursor: default;
     transform: none;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--clr-primary);
+
+  &:hover {
+    cursor: pointer;
+    color: var(--clr-fg-alt);
   }
 `;
