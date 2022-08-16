@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import Avatar from "boring-avatars";
 import styled from "styled-components";
 import GoogleMapReact from "google-map-react";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -6,9 +8,18 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 /* global google */
 
 const Post = ({ post }) => {
+  console.log(post);
   return (
     <Wrapper>
-      <Display>{post.username}</Display>
+      <Row>
+        <Avatar
+          size={40}
+          name={post.username}
+          variant="beam"
+          colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
+        />
+        <StyledLink to={`/profile/${post.owner}`}>{post.username}</StyledLink>
+      </Row>
       <Display>{post.title}</Display>
       <MapWrapper>
         <GoogleMapReact
@@ -37,12 +48,28 @@ export default Post;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 600px;
+
   background-color: var(--clr-bg-alt);
   margin: 0 2em 2em 2em;
   padding: 1em;
   height: 30em;
   border-radius: 1em;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  & > * {
+    margin: 5px;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  &:hover {
+    color: var(--clr-fg-alt);
+  }
 `;
 
 const Display = styled.div`

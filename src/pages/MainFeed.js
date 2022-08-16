@@ -21,6 +21,7 @@ const MainFeed = () => {
           groups={groupsStatus === "loaded" ? groups : false}
         />
       </Center>
+
       <div style={{ padding: "1em 0" }} />
       {postStatus === "loaded" ? (
         posts.map((post) => {
@@ -44,6 +45,7 @@ const Wrapper = styled.div`
 const Center = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
