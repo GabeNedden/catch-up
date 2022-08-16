@@ -24,7 +24,6 @@ const SearchBar = ({ groups, posts, users }) => {
             }
           }}
         />
-        <Button onClick={() => setValue("")}>Clear</Button>
       </Container>
 
       {value.length > 1 && (

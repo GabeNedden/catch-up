@@ -1,7 +1,8 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { BsBicycle, BsSunFill, BsFillMoonStarsFill } from "react-icons/bs";
+import { BsSunFill, BsFillMoonStarsFill } from "react-icons/bs";
+import { BiUserCircle } from "react-icons/bi";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { UserContext } from "../contexts/UserContext";
 
@@ -15,26 +16,23 @@ const Navbar = () => {
   return (
     <Nav>
       <Ul>
-        <li>
-          <Tab to="/">
-            <BsBicycle />
-          </Tab>
-        </li>
-        {currentUser ? (
-          <li>
-            <Tab to={`/profile/${currentUser._id}`}>{currentUser.username}</Tab>
-          </li>
-        ) : null}
-
-        <li>
-          <Tab to="/">Groups</Tab>
-        </li>
+        <Header to="/" className="lobster">
+          Catch Up!
+        </Header>
       </Ul>
       <Ul>
-        <li>
+        {currentUser ? (
+          <Li>
+            <Tab to={`/profile/${currentUser._id}`}>
+              <BiUserCircle />
+            </Tab>
+          </Li>
+        ) : null}
+
+        <Li>
           <LoginButton />
           <LogoutButton />
-        </li>
+        </Li>
 
         <Button type="button" onClick={toggleTheme} aria-label="toggle theme">
           {themeName === "dark" ? <BsSunFill /> : <BsFillMoonStarsFill />}
@@ -60,7 +58,7 @@ const Nav = styled.nav`
 
 const Tab = styled(Link)`
   width: 100%;
-  color: var(--clr-primary);
+  color: var(--clr-fg);
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -68,8 +66,7 @@ const Tab = styled(Link)`
 
   /* Change the color of links on hover */
   &:hover {
-    background-color: var(--clr-bg-alt);
-    color: var(--clr-fg-alt);
+    color: var(--clr-fg);
   }
 
   /* Add a color to the active/current link */
@@ -91,9 +88,22 @@ const Ul = styled.nav`
 `;
 
 const Button = styled.button`
-  display: block;
-  font-size: 0.9rem;
-  text-transform: lowercase;
-  transition: transform 0.2s ease-in-out;
+  font-size: 1.5rem;
+  color: var(--clr-fg);
   background-color: inherit;
+`;
+
+const Header = styled(Link)`
+  font-size: 32px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 0 20px;
+  color: var(--clr-fg);
+`;
+
+const Li = styled.li`
+  color: var(--clr-fg);
 `;

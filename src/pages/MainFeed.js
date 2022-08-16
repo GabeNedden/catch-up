@@ -14,13 +14,14 @@ const MainFeed = () => {
 
   return (
     <Wrapper>
-      <Center>
+      <Header className="lobster">Catch Up!</Header>
+      {/* <Center>
         <SearchBar
           users={allUsersStatus === "loaded" ? allUsers : false}
           posts={postStatus === "loaded" ? posts : false}
           groups={groupsStatus === "loaded" ? groups : false}
         />
-      </Center>
+      </Center> */}
 
       <div style={{ padding: "1em 0" }} />
       {postStatus === "loaded" ? (
@@ -48,4 +49,19 @@ const Center = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const Header = styled.div`
+  font-size: 32px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0 0 0;
+  color: #fff;
+
+  @media only screen and (min-width: 600px) {
+    display: none;
+  }
 `;

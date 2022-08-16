@@ -48,7 +48,6 @@ export default Post;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-
   background-color: var(--clr-bg-alt);
   margin: 0 2em 2em 2em;
   padding: 1em;
@@ -78,6 +77,10 @@ const Display = styled.div`
 
 const MapWrapper = styled.div`
   height: 400px;
+
+  @media only screen and (max-width: 600px) {
+    height: 300px;
+  }
 `;
 
 const StyledIcon = styled(FaMapMarkerAlt)`

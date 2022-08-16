@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&family=Lobster&display=swap");
+
+.lobster {
+  font-family: "Lobster", cursive;
+}
+
 .app {
   font-family: "Poppins", sans-serif;
   line-height: 1.5;
@@ -6,11 +12,13 @@
 }
 
 .light {
-  --clr-bg: #fcfcfc;
+  --clr-bg: #2a2f4c;
   --clr-bg-alt: #fff;
-  --clr-fg: #555;
-  --clr-fg-alt: #444;
-  --clr-primary: #2978b5;
+  --clr-fg: #212121;
+  --clr-fg-alt: #eceff1;
+  --clr-primary: #16453f;
+  --clr-border: #16453f;
+  --clr-white: #fff;
   --shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
@@ -20,6 +28,8 @@
   --clr-fg: #bdbddd;
   --clr-fg-alt: #cdcdff;
   --clr-primary: #90a0d9;
+  --clr-border: #fff;
+  --clr-white: #fff;
   --shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
     rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }

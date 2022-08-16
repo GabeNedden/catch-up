@@ -201,7 +201,7 @@ const ProfilePage = () => {
                 // some friend status exists
                 (friendStatus ? (
                   friendStatus.status === "Confirmed" ? (
-                    <Button disabled>Friends</Button>
+                    <Button disabled>Friend</Button>
                   ) : (
                     <>
                       <Button
@@ -333,47 +333,14 @@ const ProfilePage = () => {
         </FormContainer>
       )}
 
-      <Row>
-        {targetUser?._id === currentUser?._id ? (
-          <PostColumn>
-            <Container>
-              <Display>Friends</Display>
-              <Ul>
-                {currentUser.friends.map((friend) => {
-                  return (
-                    <Li>
-                      <StyledLink to={`/profile/${friend.friendId}`}>
-                        {friend.friendUsername}
-                      </StyledLink>
-                    </Li>
-                  );
-                })}
-              </Ul>
-            </Container>
-            <Container>
-              <Display>Circles</Display>
-              <Ul>
-                {currentUser.circles.map((circle) => {
-                  return <Li>{circle}</Li>;
-                })}
-              </Ul>
-            </Container>
-            <Container>
-              <Display>Groups</Display>
-            </Container>
-          </PostColumn>
-        ) : friendStatus && friendStatus.status === "Confirmed" ? (
-          <PostColumn>
-            <Container>
-              <Display>Mutual Friends</Display>
-              <Ul>
-                {targetUser.friends
-                  .filter((friend) => {
-                    return currentUser.friends.some(
-                      (el) => el.friendId === friend.friendId
-                    );
-                  })
-                  .map((friend) => {
+      <Container>
+        <Row>
+          {targetUser?._id === currentUser?._id ? (
+            <PostColumn>
+              <ContainerRev>
+                <Display>Friends</Display>
+                <Ul>
+                  {currentUser.friends.map((friend) => {
                     return (
                       <Li>
                         <StyledLink to={`/profile/${friend.friendId}`}>
@@ -382,31 +349,63 @@ const ProfilePage = () => {
                       </Li>
                     );
                   })}
-              </Ul>
-            </Container>
-            <Container>
-              <Display>Mutual Circles</Display>
-            </Container>
-            <Container>
-              <Display>Mutual Groups</Display>
-            </Container>
+                </Ul>
+              </ContainerRev>
+              <ContainerRev>
+                <Display>Circles</Display>
+                <Ul>
+                  {currentUser.circles.map((circle) => {
+                    return <Li>{circle}</Li>;
+                  })}
+                </Ul>
+              </ContainerRev>
+              <ContainerRev>
+                <Display>Groups</Display>
+              </ContainerRev>
+            </PostColumn>
+          ) : friendStatus && friendStatus.status === "Confirmed" ? (
+            <PostColumn>
+              <ContainerRev>
+                <Display>Mutual Friends</Display>
+                <Ul>
+                  {targetUser.friends
+                    .filter((friend) => {
+                      return currentUser.friends.some(
+                        (el) => el.friendId === friend.friendId
+                      );
+                    })
+                    .map((friend) => {
+                      return (
+                        <Li>
+                          <StyledLink to={`/profile/${friend.friendId}`}>
+                            {friend.friendUsername}
+                          </StyledLink>
+                        </Li>
+                      );
+                    })}
+                </Ul>
+              </ContainerRev>
+              <ContainerRev>
+                <Display>Mutual Groups</Display>
+              </ContainerRev>
+            </PostColumn>
+          ) : null}
+          <PostColumn>
+            {postStatus === "loaded" &&
+            posts.filter((post) => {
+              return post.owner === userId;
+            }).length
+              ? posts
+                  .filter((post) => {
+                    return post.owner === userId;
+                  })
+                  .map((post) => {
+                    return <Post post={post} key={uuidv4()} />;
+                  })
+              : "This User has no public posts"}
           </PostColumn>
-        ) : null}
-        <PostColumn>
-          {postStatus === "loaded" &&
-          posts.filter((post) => {
-            return post.owner === userId;
-          }).length
-            ? posts
-                .filter((post) => {
-                  return post.owner === userId;
-                })
-                .map((post) => {
-                  return <Post post={post} key={uuidv4()} />;
-                })
-            : "This User has no public posts"}
-        </PostColumn>
-      </Row>
+        </Row>
+      </Container>
     </Wrapper>
   );
 };
@@ -421,6 +420,13 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
   background-color: var(--clr-bg-alt);
+  margin: 2em 2em 2em 2em;
+  padding: 1em;
+  border-radius: 1em;
+`;
+
+const ContainerRev = styled.div`
+  background-color: var(--clr-bg);
   margin: 2em 2em 2em 2em;
   padding: 1em;
   border-radius: 1em;
