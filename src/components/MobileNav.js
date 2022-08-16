@@ -1,28 +1,29 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
+import { PostContext } from "../contexts/PostContext";
 import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
+import { AiOutlinePlusCircle, AiFillMinusCircle } from "react-icons/ai";
+import { BiSearchAlt } from "react-icons/bi";
 import { RiAccountPinCircleLine, RiHomeLine } from "react-icons/ri";
 import { TbMap2 } from "react-icons/tb";
 import { HiOutlineUserGroup } from "react-icons/hi";
-import { AiOutlinePlusCircle, AiFillMinusCircle } from "react-icons/ai";
 
-import PostModal from "./PostModal";
 import LoginButton from "./LoginButton";
 
 const MobileNav = () => {
   const { currentUser, status } = useContext(UserContext);
-  const [open, setOpen] = useState(false);
+  const { postFormOpen, setPostFormOpen } = useContext(PostContext);
 
   return (
     <Navbar>
-      {open && <PostModal currentUser={currentUser} />}
       {currentUser && (
         <>
           <Tab
             to="/"
             onClick={() => {
-              setOpen(false);
+              setPostFormOpen(false);
             }}
           >
             <RiHomeLine />
@@ -31,32 +32,35 @@ const MobileNav = () => {
           <Tab
             to="/mapfeed"
             onClick={() => {
-              setOpen(false);
+              setPostFormOpen(false);
             }}
           >
-            <TbMap2 />
+            <BiSearchAlt />
           </Tab>
 
-          <PostTab
+          <Tab
+            smooth
+            to={`/profile/${currentUser?._id}#postForm`}
             onClick={() => {
-              setOpen(!open);
+              setPostFormOpen(true);
             }}
           >
-            {open ? <AiFillMinusCircle /> : <AiOutlinePlusCircle />}
-          </PostTab>
+            <AiOutlinePlusCircle />
+          </Tab>
 
           <Tab
             to="/groups"
             onClick={() => {
-              setOpen(false);
+              setPostFormOpen(false);
             }}
           >
             <HiOutlineUserGroup />
           </Tab>
+
           <Tab
             to={`/profile/${currentUser?._id}`}
             onClick={() => {
-              setOpen(false);
+              setPostFormOpen(false);
             }}
           >
             <RiAccountPinCircleLine />
@@ -89,7 +93,7 @@ const Navbar = styled.div`
   }
 `;
 
-const Tab = styled(Link)`
+const Tab = styled(HashLink)`
   display: flex;
   justify-content: center;
   align-items: center;

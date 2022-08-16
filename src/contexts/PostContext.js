@@ -8,6 +8,7 @@ export const PostProvider = ({ children }) => {
   const { currentUser } = useContext(UserContext);
   const [postStatus, setPostStatus] = useState("loading");
   const [posts, setPosts] = useState([]);
+  const [postFormOpen, setPostFormOpen] = useState(false);
 
   useEffect(() => {
     if (currentUser) {
@@ -42,6 +43,8 @@ export const PostProvider = ({ children }) => {
         setPostStatus,
         posts,
         isAuthenticated,
+        postFormOpen,
+        setPostFormOpen,
       }}
     >
       {children}

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { PostContext } from "../contexts/PostContext";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
@@ -10,7 +11,6 @@ import Post from "../components/Post";
 import Avatar from "boring-avatars";
 import GoogleMapReact, { contextType } from "google-map-react";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { PostContext } from "../contexts/PostContext";
 
 const ProfilePage = () => {
   const initialState = {
@@ -31,7 +31,7 @@ const ProfilePage = () => {
   const [targetUser, setTargetUser] = useState(null);
   const [targetStatus, setTargetStatus] = useState("loading");
   const [reRender, setReRender] = useState(false);
-  const [open, setOpen] = useState(false);
+  const { postFormOpen, setPostFormOpen } = useContext(PostContext);
 
   const { postStatus, posts } = useContext(PostContext);
   const [values, setValues] = useState(initialState);
@@ -231,8 +231,8 @@ const ProfilePage = () => {
                 ))}
               {/* user is looking at their own page */}
               {targetUser?._id === currentUser?._id && (
-                <Button onClick={() => setOpen(!open)}>
-                  {open ? "Cancel" : "Post a Catch Up!"}
+                <Button onClick={() => setPostFormOpen(!postFormOpen)}>
+                  {postFormOpen ? "Cancel" : "Post a Catch Up!"}
                 </Button>
               )}
             </Column>
@@ -241,8 +241,13 @@ const ProfilePage = () => {
       </Container>
 
       {/* start of post/map form */}
-      {userLocation && open && (
+      {postFormOpen && (
         <FormContainer>
+          <Center>
+            <Display id="postForm" style={{ marginBottom: 10 }}>
+              Choose a point on the map!
+            </Display>
+          </Center>
           <MapWrapper>
             <GoogleMapReact
               onClick={(e) => {
@@ -322,7 +327,7 @@ const ProfilePage = () => {
 
             <Center>
               <Button onClick={onSubmit}>Submit</Button>
-              <Button onClick={() => setOpen(false)}>Cancel</Button>
+              <Button onClick={() => setPostFormOpen(false)}>Cancel</Button>
             </Center>
           </Form>
         </FormContainer>
