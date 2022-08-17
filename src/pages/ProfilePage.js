@@ -95,6 +95,7 @@ const ProfilePage = () => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res.data);
+        setPostFormOpen(false);
       })
       .catch((error) => {
         console.log("error:", error);
@@ -352,7 +353,7 @@ const ProfilePage = () => {
             <Label>Share with</Label>
             {currentUser.friends.map(({ friendId, friendUsername }, index) => {
               return (
-                <li key={index}>
+                <Li key={index}>
                   <div>
                     <input
                       type="checkbox"
@@ -362,11 +363,14 @@ const ProfilePage = () => {
                       checked={checkedState[index]}
                       onChange={() => handleOnChange(index)}
                     />
-                    <label htmlFor={`custom-checkbox-${index}`}>
+                    <label
+                      htmlFor={`custom-checkbox-${index}`}
+                      style={{ marginLeft: 10 }}
+                    >
                       {friendUsername}
                     </label>
                   </div>
-                </li>
+                </Li>
               );
             })}
 
@@ -584,7 +588,7 @@ const Input = styled.input`
   padding: 10px 15px;
   margin-bottom: 10px;
   font-size: 14px;
-  color: var(--clr-fg-alt);
+  color: var(--clr-fg);
   background-color: var(--clr-bg);
 
   &:disabled {
@@ -600,9 +604,9 @@ const Label = styled.label`
   margin-bottom: 3px;
   margin-top: 20px;
   color: white;
-  font-size: 14px;
-  font-weight: 200;
-  color: var(--clr-fg-alt);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--clr-fg);
 `;
 
 const Center = styled.div`
@@ -618,6 +622,7 @@ const Ul = styled.ul`
 `;
 
 const Li = styled.li`
+  list-style-type: none;
   margin: 0 0 0 5px;
 `;
 
