@@ -110,7 +110,7 @@ const Post = ({ post }) => {
 export default Post;
 
 const Scroll = styled.div`
-  height: 7em;
+  max-height: 7em;
   overflow-y: scroll;
 `;
 
