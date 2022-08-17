@@ -201,6 +201,8 @@ const Container = styled.div`
 const Input = styled.input`
   width: 100%;
   margin-right: 10px;
+  color: var(--clr-white);
+  background-color: var(--clr-bg-alt);
   border: var(--clr-primary) 1px solid;
   border-radius: 4px;
   padding: 8px;
