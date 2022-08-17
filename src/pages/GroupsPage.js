@@ -130,7 +130,7 @@ const GroupsPage = () => {
           <Container>
             {groups
               .filter((check) => {
-                return check.members.some((el) => el.id !== currentUser._id);
+                return check.members.every((el) => el.id !== currentUser._id);
               })
               .map((group) => {
                 return (

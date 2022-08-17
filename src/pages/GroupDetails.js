@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 import styled from "styled-components";
 import BackButton from "../components/BackButton";
 import Post from "../components/Post";
@@ -10,7 +11,8 @@ import { UserContext } from "../contexts/UserContext";
 const GroupDetails = () => {
   const { groupId } = useParams();
   const { groups, groupsStatus } = useContext(GroupContext);
-  const { posts, postStatus } = useContext(PostContext);
+  const { posts, postStatus, setPostFormOpen } = useContext(PostContext);
+
   const { currentUser } = useContext(UserContext);
   const [thisGroup, setThisGroup] = useState(null);
   const [member, setMember] = useState(false);
@@ -79,7 +81,15 @@ const GroupDetails = () => {
               <Button onClick={joinGroup}>Join</Button>
             )}
 
-            <Button>Share Catch Up!</Button>
+            <HashButton
+              smooth
+              to={`/profile/${currentUser?._id}#postForm`}
+              onClick={() => {
+                setPostFormOpen(true);
+              }}
+            >
+              Share Catch Up!
+            </HashButton>
           </Row>
         </>
       )}
@@ -153,6 +163,26 @@ const Button = styled.button`
   font-size: 16px;
   margin: 0 15px 15px 15px;
   width: 200px;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:disabled {
+    cursor: default;
+    transform: none;
+  }
+`;
+
+const HashButton = styled(HashLink)`
+  background: var(--clr-fg);
+  color: var(--clr-bg);
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 0 15px 15px 15px;
+  width: 200px;
+  text-align: center;
 
   &:hover {
     transform: scale(1.1);
