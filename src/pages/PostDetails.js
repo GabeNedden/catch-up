@@ -15,7 +15,6 @@ const PostDetails = () => {
         return post._id === postId;
       });
       setThisPost(temp);
-      console.log(temp);
     }
   }, [posts]);
   return (

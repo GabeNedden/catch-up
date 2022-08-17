@@ -33,7 +33,6 @@ const GroupDetails = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res.data);
         setMember(true);
       })
       .catch((error) => {
@@ -96,7 +95,6 @@ const GroupDetails = () => {
             <Container>
               <Ul>
                 {thisGroup.members.map((member) => {
-                  console.log(member);
                   return (
                     <Li>
                       <StyledLink to={`/profile/${member.id}`}>
@@ -111,7 +109,6 @@ const GroupDetails = () => {
           <PostColumn style={{ marginTop: "30px" }}>
             {posts
               .filter((post) => {
-                console.log(post.sharedWith);
                 return post.sharedWith.includes(groupId);
               })
               .map((post) => {

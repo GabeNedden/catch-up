@@ -22,7 +22,7 @@ const GroupsPage = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log(values);
+
     if (values.groupName.length > 1) {
       fetch(`https://catch-up-api.herokuapp.com/newgroup`, {
         method: "POST",
@@ -40,7 +40,6 @@ const GroupsPage = () => {
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res.data);
           setValues({ ...values, groupName: "" });
           setGroupFormOpen(false);
         })

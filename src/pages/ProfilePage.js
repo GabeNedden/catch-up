@@ -48,7 +48,6 @@ const ProfilePage = () => {
     if (currentUser) {
       setCheckedState(new Array(currentUser.friends?.length).fill(false));
       if (myGroups) {
-        console.log("first", myGroups);
         setCheckedGroup(new Array(myGroups.length).fill(false));
       }
     }
@@ -81,7 +80,6 @@ const ProfilePage = () => {
     });
 
     setShareArray(totalShare);
-    console.log("total", totalShare);
   };
 
   const handleGroupChange = (position) => {
@@ -99,7 +97,6 @@ const ProfilePage = () => {
     });
 
     setGroupArray(totalShare);
-    console.log("total", totalShare);
   };
 
   const onSubmit = (event) => {
@@ -235,10 +232,6 @@ const ProfilePage = () => {
       </Wrapper>
     );
   }
-
-  // // console.log("user", user);
-  // console.log("target", targetUser);
-  // // console.log("current", currentUser);
 
   const friendStatus = targetUser?.friends?.find((friend) => {
     return friend?.friendId === currentUser?._id;

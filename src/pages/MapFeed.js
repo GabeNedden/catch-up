@@ -14,10 +14,6 @@ const MapFeed = () => {
   const { userLocation, setUserLocation } = useContext(UserContext);
   const { publicPosts } = useContext(PostContext);
 
-  useEffect(() => {
-    console.log(publicPosts);
-  }, publicPosts);
-
   return (
     <Wrapper>
       <Header className="lobster">Catch Up!</Header>

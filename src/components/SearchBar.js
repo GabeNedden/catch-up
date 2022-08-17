@@ -11,10 +11,6 @@ const SearchBar = () => {
   const { groups, groupsStatus } = useContext(GroupContext);
   const [value, setValue] = useState("");
 
-  const handleSelect = (suggestion) => {
-    console.log(suggestion);
-  };
-
   return (
     <Wrapper>
       <Container>
