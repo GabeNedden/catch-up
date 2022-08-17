@@ -1,15 +1,52 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import BackButton from "../components/BackButton";
 import Post from "../components/Post";
 import { GroupContext } from "../contexts/GroupContext";
 import { PostContext } from "../contexts/PostContext";
+import { UserContext } from "../contexts/UserContext";
 
 const GroupDetails = () => {
   const { groupId } = useParams();
   const { groups, groupsStatus } = useContext(GroupContext);
   const { posts, postStatus } = useContext(PostContext);
+  const { currentUser } = useContext(UserContext);
+  const [thisGroup, setThisGroup] = useState(null);
+  const [member, setMember] = useState(false);
+
+  const joinGroup = (e) => {
+    e.preventDefault();
+    fetch(`https://catch-up-api.herokuapp.com/joingroup`, {
+      method: "PUT",
+      body: JSON.stringify({
+        userId: currentUser._id,
+        username: currentUser.username,
+        groupId: groupId,
+      }),
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log("error:", error);
+      });
+  };
+
+  useEffect(() => {
+    if (groupsStatus === "loaded" && currentUser) {
+      const thisGroup = groups.find((group) => {
+        return group._id === groupId;
+      });
+
+      setThisGroup(thisGroup);
+    }
+  }, [currentUser, groupsStatus]);
 
   return (
     <Wrapper>
@@ -17,29 +54,22 @@ const GroupDetails = () => {
         <BackButton />
       </Link>
       <Header className="lobster">Catch Up!</Header>
-      {groupsStatus === "loaded" &&
-        groups
-          .filter((group) => {
-            return group._id === groupId;
-          })
-          .map((group) => {
-            return (
-              <>
-                <Center>
-                  <Container style={{ width: "80%" }}>
-                    <Center>
-                      <Display>{group.name}</Display>
-                    </Center>
-                  </Container>
-                </Center>
-                <Row>
-                  <Button>Join Group</Button>
-                  <Button>Share Catch Up!</Button>
-                </Row>
-              </>
-            );
-          })}
-      {groupsStatus === "loaded" &&
+      {thisGroup && (
+        <>
+          <Center>
+            <Container style={{ width: "80%" }}>
+              <Center>
+                <Display>{thisGroup.name}</Display>
+              </Center>
+            </Container>
+          </Center>
+          <Row>
+            <Button onClick={joinGroup}>{thisGroup.members}</Button>
+            <Button>Share Catch Up!</Button>
+          </Row>
+        </>
+      )}
+      {thisGroup &&
         postStatus === "loaded" &&
         posts
           .filter((post) => {

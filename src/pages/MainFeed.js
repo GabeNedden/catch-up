@@ -9,21 +9,36 @@ import { GroupContext } from "../contexts/GroupContext";
 
 const MainFeed = () => {
   const { allUsers, allUsersStatus } = useContext(AllUsersContext);
-  const { postStatus, posts } = useContext(PostContext);
+  const { postStatus, posts, publicPosts, publicPostStatus } =
+    useContext(PostContext);
   const { groups, groupsStatus } = useContext(GroupContext);
+
+  console.log(publicPostStatus);
+
+  if (publicPostStatus) {
+    console.log(publicPosts);
+  }
 
   return (
     <Wrapper>
       <Header className="lobster">Catch Up!</Header>
 
-      <div style={{ padding: "1em 0" }} />
-      {postStatus === "loaded" ? (
-        posts.map((post) => {
-          return <Post post={post} key={uuidv4()} />;
-        })
-      ) : (
-        <div>loading</div>
+      {postStatus !== "loaded" && (
+        <Center style={{ marginTop: 10 }}>
+          <Display>Public Posts</Display>
+          <p>Sign in to discover events, groups, and friends</p>
+        </Center>
       )}
+
+      <div style={{ padding: "1em 0" }} />
+      {postStatus === "loaded"
+        ? posts.map((post) => {
+            return <Post post={post} key={uuidv4()} />;
+          })
+        : publicPostStatus === "loaded" &&
+          publicPosts.map((post) => {
+            return <Post post={post} key={uuidv4()} />;
+          })}
     </Wrapper>
   );
 };
@@ -57,4 +72,11 @@ const Header = styled.div`
   @media only screen and (min-width: 600px) {
     display: none;
   }
+`;
+
+const Display = styled.div`
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--clr-primary);
+  margin-bottom: 10px;
 `;

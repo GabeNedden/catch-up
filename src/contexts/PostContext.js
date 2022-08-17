@@ -7,6 +7,8 @@ export const PostProvider = ({ children }) => {
   const { user, isAuthenticated } = useAuth0();
   const { currentUser } = useContext(UserContext);
   const [postStatus, setPostStatus] = useState("loading");
+  const [publicPosts, setPublicPosts] = useState(null);
+  const [publicPostStatus, setPublicPostStatus] = useState("loading");
   const [posts, setPosts] = useState([]);
   const [postFormOpen, setPostFormOpen] = useState(false);
 
@@ -34,12 +36,33 @@ export const PostProvider = ({ children }) => {
     }
   }, [currentUser]);
 
+  useEffect(() => {
+    fetch(`https://catch-up-api.herokuapp.com/publicposts/`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setPublicPosts(res.data);
+        setPublicPostStatus("loaded");
+      })
+      .catch((error) => {
+        console.log("error:", error);
+        setPostStatus("error");
+      });
+  }, []);
+
   return (
     <PostContext.Provider
       value={{
         postStatus,
         setPostStatus,
         posts,
+        publicPosts,
+        publicPostStatus,
         isAuthenticated,
         postFormOpen,
         setPostFormOpen,
