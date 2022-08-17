@@ -23,27 +23,31 @@ const GroupsPage = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     console.log(values);
-    fetch(`https://catch-up-api.herokuapp.com/newgroup`, {
-      method: "POST",
-      body: JSON.stringify({
-        userId: currentUser._id,
-        username: currentUser.username,
-        groupName: values.groupName,
-        admins: values.admins,
-        members: values.members,
-      }),
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res.data);
+    if (values.groupName.length > 1) {
+      fetch(`https://catch-up-api.herokuapp.com/newgroup`, {
+        method: "POST",
+        body: JSON.stringify({
+          userId: currentUser._id,
+          username: currentUser.username,
+          groupName: values.groupName,
+          admins: values.admins,
+          members: values.members,
+        }),
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
       })
-      .catch((error) => {
-        console.log("error:", error);
-      });
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res.data);
+          setValues({ ...values, groupName: "" });
+          setGroupFormOpen(false);
+        })
+        .catch((error) => {
+          console.log("error:", error);
+        });
+    }
   };
 
   return (
