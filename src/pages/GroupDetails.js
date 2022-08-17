@@ -96,9 +96,10 @@ const GroupDetails = () => {
             <Container>
               <Ul>
                 {thisGroup.members.map((member) => {
+                  console.log(member);
                   return (
                     <Li>
-                      <StyledLink to={`/profile/${member._id}`}>
+                      <StyledLink to={`/profile/${member.id}`}>
                         {member.username}
                       </StyledLink>
                     </Li>

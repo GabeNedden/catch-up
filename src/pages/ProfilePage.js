@@ -34,19 +34,25 @@ const ProfilePage = () => {
   const [targetStatus, setTargetStatus] = useState("loading");
   const [reRender, setReRender] = useState(false);
   const { postFormOpen, setPostFormOpen } = useContext(PostContext);
-  const { groups, groupsStatus } = useContext(GroupContext);
+  const { groups, groupsStatus, myGroups } = useContext(GroupContext);
 
   const { postStatus, posts } = useContext(PostContext);
   const [values, setValues] = useState(initialState);
 
   const [shareArray, setShareArray] = useState([]);
   const [checkedState, setCheckedState] = useState();
+  const [groupArray, setGroupArray] = useState([]);
+  const [checkedGroup, setCheckedGroup] = useState();
 
   useEffect(() => {
     if (currentUser) {
       setCheckedState(new Array(currentUser.friends.length).fill(false));
+      if (myGroups) {
+        console.log("first", myGroups);
+        setCheckedGroup(new Array(myGroups.length).fill(false));
+      }
     }
-  }, [currentUser]);
+  }, [currentUser, myGroups]);
 
   const onChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -78,6 +84,24 @@ const ProfilePage = () => {
     console.log("total", totalShare);
   };
 
+  const handleGroupChange = (position) => {
+    const updatedCheckedState = checkedGroup.map((item, index) =>
+      index === position ? !item : item
+    );
+
+    setCheckedGroup(updatedCheckedState);
+
+    let totalShare = [];
+    updatedCheckedState.forEach((cur, index) => {
+      if (cur === true) {
+        totalShare.push(myGroups[index]._id);
+      }
+    });
+
+    setGroupArray(totalShare);
+    console.log("total", totalShare);
+  };
+
   const onSubmit = (event) => {
     event.preventDefault();
 
@@ -87,7 +111,7 @@ const ProfilePage = () => {
         userId: currentUser._id,
         username: currentUser.username,
         location: values.location,
-        sharedWith: shareArray,
+        sharedWith: [...shareArray, ...groupArray],
         title: values.title,
         body: values.body,
         public: values.public,
@@ -375,6 +399,30 @@ const ProfilePage = () => {
                 </Li>
               );
             })}
+            {myGroups &&
+              myGroups.length > 0 &&
+              myGroups.map(({ _id, name }, index) => {
+                return (
+                  <Li key={index}>
+                    <div>
+                      <input
+                        type="checkbox"
+                        id={`custom-checkbox-${index}`}
+                        name={name}
+                        value={_id}
+                        checked={checkedGroup[index]}
+                        onChange={() => handleGroupChange(index)}
+                      />
+                      <label
+                        htmlFor={`custom-checkbox-${index}`}
+                        style={{ marginLeft: 10 }}
+                      >
+                        {name} - Group
+                      </label>
+                    </div>
+                  </Li>
+                );
+              })}
 
             <Center>
               <Button onClick={onSubmit}>Submit</Button>
