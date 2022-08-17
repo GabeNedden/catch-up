@@ -32,6 +32,7 @@ const Post = ({ post }) => {
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         post.comments.push({
           id: currentUser._id,
           username: currentUser.username,
