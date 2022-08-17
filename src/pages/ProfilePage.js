@@ -454,6 +454,7 @@ const ProfilePage = () => {
             <PostColumn>
               <Display style={{ margin: "0 0 -30px 50px" }}>Friends</Display>
               <ContainerRev>
+                <MobileDisplay>Friends</MobileDisplay>
                 <Ul>
                   {currentUser.friends.map((friend) => {
                     return (
@@ -466,16 +467,20 @@ const ProfilePage = () => {
                   })}
                 </Ul>
               </ContainerRev>
-              <Display style={{ margin: "0 0 -30px 50px" }}>Circles</Display>
+
+              {/* <Display style={{ margin: "0 0 -30px 50px" }}>Circles</Display>
               <ContainerRev>
+                <MobileDisplay>Circles</MobileDisplay>
                 <Ul>
                   {currentUser.circles.map((circle) => {
                     return <Li>{circle}</Li>;
                   })}
                 </Ul>
-              </ContainerRev>
+              </ContainerRev> */}
+
               <Display style={{ margin: "0 0 -30px 50px" }}>Groups</Display>
               <ContainerRev>
+                <MobileDisplay>Groups</MobileDisplay>
                 <Ul>
                   {groupsStatus === "loaded" &&
                     groups
@@ -533,7 +538,7 @@ const ProfilePage = () => {
               </ContainerRev>
             </PostColumn>
           ) : null}
-          <PostColumn>
+          <PostColumn style={{ alignSelf: "center" }}>
             {postStatus === "loaded" &&
             posts.filter((post) => {
               return post.owner === userId;
@@ -573,6 +578,12 @@ const ContainerRev = styled.div`
   margin: 2em 2em 2em 2em;
   padding: 1em;
   border-radius: 1em;
+
+  @media only screen and (max-width: 600px) {
+    margin: 0;
+    padding: 0;
+    background-color: var(--clr-bg-alt);
+  }
 `;
 
 const FormContainer = styled.div`
@@ -615,6 +626,16 @@ const Display = styled.div`
   font-size: 22px;
   color: var(--clr-fg);
   margin: 2px;
+`;
+
+const MobileDisplay = styled.div`
+  display: none;
+  font-weight: 700;
+  font-size: 22px;
+
+  @media only screen and (max-width: 600px) {
+    display: block;
+  }
 `;
 
 const MapWrapper = styled.div`
