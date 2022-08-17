@@ -81,27 +81,43 @@ const GroupDetails = () => {
               <Button onClick={joinGroup}>Join</Button>
             )}
 
-            <HashButton
-              smooth
-              to={`/profile/${currentUser?._id}#postForm`}
-              onClick={() => {
-                setPostFormOpen(true);
-              }}
-            >
+            <HashButton smooth to={`/profile/${currentUser?._id}#postForm`}>
               Share Catch Up!
             </HashButton>
           </Row>
         </>
       )}
       {thisGroup && postStatus === "loaded" && member ? (
-        posts
-          .filter((post) => {
-            console.log(post.sharedWith);
-            return post.sharedWith.includes(groupId);
-          })
-          .map((post) => {
-            return <Post post={post} />;
-          })
+        <Row>
+          <PostColumn>
+            <Display style={{ margin: "0 0 -30px 50px" }}>
+              Group Members
+            </Display>
+            <Container>
+              <Ul>
+                {thisGroup.members.map((member) => {
+                  return (
+                    <Li>
+                      <StyledLink to={`/profile/${member._id}`}>
+                        {member.username}
+                      </StyledLink>
+                    </Li>
+                  );
+                })}
+              </Ul>
+            </Container>
+          </PostColumn>
+          <PostColumn style={{ marginTop: "30px" }}>
+            {posts
+              .filter((post) => {
+                console.log(post.sharedWith);
+                return post.sharedWith.includes(groupId);
+              })
+              .map((post) => {
+                return <Post post={post} />;
+              })}
+          </PostColumn>
+        </Row>
       ) : (
         <Center>
           <Display>Join the group to see the Catch Ups!</Display>
@@ -132,6 +148,12 @@ const Header = styled.div`
   @media only screen and (min-width: 600px) {
     display: none;
   }
+`;
+
+const PostColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `;
 
 const Display = styled.div`
@@ -198,4 +220,21 @@ const Row = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+`;
+
+const Ul = styled.ul`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Li = styled.li`
+  list-style-type: none;
+  margin: 0 0 0 5px;
+`;
+
+const StyledLink = styled(Link)`
+  &:hover {
+    cursor: pointer;
+    color: var(--clr-fg-alt);
+  }
 `;
