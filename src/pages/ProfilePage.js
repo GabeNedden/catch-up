@@ -322,15 +322,17 @@ const ProfilePage = () => {
               defaultValue="Title"
             />
 
-            <Label>Public</Label>
-            <Input
-              type="checkbox"
-              name="public"
-              value={values.public}
-              onChange={(e) => {
-                setValues({ ...values, public: e.target.checked });
-              }}
-            />
+            <RowVar>
+              <Label>Public</Label>
+              <Input
+                type="checkbox"
+                name="public"
+                value={values.public}
+                onChange={(e) => {
+                  setValues({ ...values, public: e.target.checked });
+                }}
+              />
+            </RowVar>
 
             <Label>Start Time</Label>
             <DateTimePicker
@@ -527,6 +529,10 @@ const Row = styled.div`
   @media only screen and (max-width: 800px) {
     flex-direction: column;
   }
+`;
+
+const RowVar = styled.div`
+  display: block;
 `;
 
 const Column = styled.div`

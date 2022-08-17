@@ -1,13 +1,54 @@
 import { Link } from "react-router-dom";
 import Avatar from "boring-avatars";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import GoogleMapReact from "google-map-react";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import moment from "moment";
+import { useContext, useState } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 /* eslint-disable no-undef */
 /* global google */
 
 const Post = ({ post }) => {
+  const { currentUser } = useContext(UserContext);
+  const [comment, setComment] = useState("");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    fetch(`https://catch-up-api.herokuapp.com/newcomment`, {
+      method: "POST",
+      body: JSON.stringify({
+        userId: currentUser._id,
+        username: currentUser.username,
+        postId: post._id,
+        comment: comment,
+      }),
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.data);
+        post.comments.push({
+          id: currentUser._id,
+          username: currentUser.username,
+          body: comment,
+        });
+        setComment("");
+      })
+      .catch((error) => {
+        console.log("error:", error);
+      });
+  };
+
+  const onChange = (event) => {
+    setComment(event.target.value);
+  };
+
   return (
     <Wrapper>
       <Row style={{ marginBottom: "15px" }}>
@@ -19,7 +60,12 @@ const Post = ({ post }) => {
         />
         <StyledLink to={`/profile/${post.owner}`}>{post.username}</StyledLink>
       </Row>
-      <Display>{post.title}</Display>
+      <Row style={{ justifyContent: "space-between" }}>
+        <Display>{post.title}</Display>
+        {post.startTime && (
+          <Display>{moment(post.startTime).fromNow()}</Display>
+        )}
+      </Row>
       <MapWrapper>
         <GoogleMapReact
           bootstrapURLKeys={{
@@ -36,6 +82,25 @@ const Post = ({ post }) => {
           />
         </GoogleMapReact>
       </MapWrapper>
+      {post.comments ? (
+        post.comments.map((comment) => {
+          return (
+            <Container>
+              {comment.username}: {comment.body}
+            </Container>
+          );
+        })
+      ) : (
+        <div>no comments yet...</div>
+      )}
+      <form onSubmit={onSubmit}>
+        <Input
+          onChange={onChange}
+          name="comment"
+          value={comment}
+          placeholder="leave a comment"
+        />
+      </form>
     </Wrapper>
   );
 };
@@ -50,6 +115,13 @@ const Wrapper = styled.div`
   margin: 0 2em 2em 2em;
   padding: 1em;
   height: 30em;
+  border-radius: 1em;
+`;
+
+const Container = styled.div`
+  background-color: var(--clr-bg-alt);
+  margin: 0 2em 1em 0;
+  padding: 2px 10px;
   border-radius: 1em;
 `;
 
@@ -88,4 +160,21 @@ const StyledIcon = styled(FaMapMarkerAlt)`
   color: red;
   font-size: 24px;
   transform: translate(-12px, -20px);
+`;
+
+const Input = styled.input`
+  display: block;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid var(--clr-fg-alt);
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--clr-fg);
+  background-color: var(--clr-bg);
+
+  &:disabled {
+    color: var(--shadow);
+    background-color: grey;
+  }
 `;

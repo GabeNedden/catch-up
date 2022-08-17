@@ -5,29 +5,30 @@ export const LiveLocationProvider = ({ children }) => {
   const [liveLocation, setLiveLocation] = useState(null);
 
   useEffect(() => {
-    let userLocationTimer = setTimeout(() => {
-      const success = (pos) => {
-        setUserLocation({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        });
-      };
+    const success = (pos) => {};
 
-      const error = (err) => {
-        console.warn(`ERROR(${err.code}): ${err.message}`);
-      };
+    let id;
+    let options;
 
-      navigator.geolocation.getCurrentPosition(success, error, {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
+    function success(pos) {
+      setLiveLocation({
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
       });
-    }, 5000);
+    }
 
-    return () => {
-      clearTimeout(userLocationTimer);
+    function error(err) {
+      console.error(`ERROR(${err.code}): ${err.message}`);
+    }
+
+    options = {
+      enableHighAccuracy: false,
+      timeout: 5000,
+      maximumAge: 0,
     };
-  });
+
+    id = navigator.geolocation.watchPosition(success, error, options);
+  }, []);
 
   return (
     <LiveLocationContext.Provider
