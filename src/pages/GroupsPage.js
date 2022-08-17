@@ -66,6 +66,7 @@ const GroupsPage = () => {
             <Input
               disabled
               name="admins"
+              placeholder="coming soon"
               value={values.admins}
               onChange={onChange}
               defaultValue=""
@@ -75,6 +76,7 @@ const GroupsPage = () => {
             <Input
               disabled
               name="members"
+              placeholder="coming soon"
               value={values.members}
               onChange={onChange}
               defaultValue=""
@@ -232,7 +234,7 @@ const Input = styled.input`
   padding: 10px 15px;
   margin-bottom: 10px;
   font-size: 14px;
-  color: var(--clr-fg-alt);
+  color: var(--clr-fg);
   background-color: var(--clr-bg);
 
   &:disabled {
@@ -249,9 +251,9 @@ const Label = styled.label`
   margin-bottom: 3px;
   margin-top: 20px;
   color: white;
-  font-size: 14px;
-  font-weight: 200;
-  color: var(--clr-fg-alt);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--clr-fg);
 `;
 
 const Button = styled.button`

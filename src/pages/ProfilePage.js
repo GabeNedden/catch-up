@@ -7,6 +7,7 @@ import { PostContext } from "../contexts/PostContext";
 import { GroupContext } from "../contexts/GroupContext";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import DateTimePicker from "react-datetime-picker";
 
 import Post from "../components/Post";
 import Avatar from "boring-avatars";
@@ -19,7 +20,7 @@ const ProfilePage = () => {
     body: "",
     sharedWith: [],
     location: null,
-    startTime: "",
+    startTime: new Date(),
     endTime: "",
     public: false,
     now: false,
@@ -49,6 +50,14 @@ const ProfilePage = () => {
 
   const onChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
+  };
+
+  const dateChange = (value) => {
+    setValues({ ...values, startTime: value });
+  };
+
+  const resetDate = () => {
+    setValues({ ...values, startTime: new Date() });
   };
 
   const handleOnChange = (position) => {
@@ -324,31 +333,22 @@ const ProfilePage = () => {
             />
 
             <Label>Start Time</Label>
-            <Input
-              disabled={values.now}
+            <DateTimePicker
+              style={{ width: "100%" }}
+              required
+              minDate={new Date()}
+              calendarIcon={null}
+              disableClock={true}
+              yearPlaceholder="yyyy"
+              minutePlaceholder="mm"
+              hourPlaceholder="hh"
+              onChange={dateChange}
               name="startTime"
               value={values.startTime}
-              onChange={onChange}
-              defaultValue=""
             />
-
-            <Label>Now?</Label>
-            <Input
-              type="checkbox"
-              name="now"
-              value={values.now}
-              onChange={(e) => {
-                setValues({ ...values, now: e.target.checked });
-              }}
-            />
-
-            <Label>End Time</Label>
-            <Input
-              name="endTime"
-              value={values.endTime}
-              onChange={onChange}
-              defaultValue=""
-            />
+            <Button style={{ padding: " 5px 10px" }} onClick={resetDate}>
+              Now
+            </Button>
 
             <Label>Share with</Label>
             {currentUser.friends.map(({ friendId, friendUsername }, index) => {
