@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const ThemeContext = createContext();
 
 const ThemeProvider = ({ children }) => {
-  const [themeName, setThemeName] = useState("light");
+  const [themeName, setThemeName] = useState("dark");
 
   useEffect(() => {
     const isDark = localStorage.getItem("themeName") === "dark";
