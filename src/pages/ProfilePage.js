@@ -323,7 +323,7 @@ const ProfilePage = () => {
                   location: { lat: e.lat, lng: e.lng },
                 });
               }}
-              defaultZoom={16}
+              defaultZoom={14}
               defaultCenter={userLocation}
               bootstrapURLKeys={{
                 key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,

@@ -1,10 +1,22 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import styled from "styled-components";
 import SearchBar from "../components/SearchBar";
 import { UserContext } from "../contexts/UserContext";
+import { Link } from "react-router-dom";
+
+import GoogleMapReact from "google-map-react";
+import { FaMapMarkerAlt } from "react-icons/fa";
+
+import { PostContext } from "../contexts/PostContext";
 
 const MapFeed = () => {
   const { currentUser } = useContext(UserContext);
+  const { userLocation, setUserLocation } = useContext(UserContext);
+  const { publicPosts } = useContext(PostContext);
+
+  useEffect(() => {
+    console.log(publicPosts);
+  }, publicPosts);
 
   return (
     <Wrapper>
@@ -19,6 +31,32 @@ const MapFeed = () => {
           </Display>
         )}
       </Center>
+      <FormContainer>
+        <MapWrapper>
+          <GoogleMapReact
+            defaultZoom={15}
+            defaultCenter={userLocation}
+            bootstrapURLKeys={{
+              key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+            }}
+            yesIWantToUseGoogleMapApiInternals
+          >
+            {publicPosts &&
+              publicPosts.length > 0 &&
+              publicPosts.map((post) => {
+                return (
+                  <StyledLink
+                    to={`/post/${post._id}`}
+                    lat={post.location.lat}
+                    lng={post.location.lng}
+                  >
+                    <StyledIcon />
+                  </StyledLink>
+                );
+              })}
+          </GoogleMapReact>
+        </MapWrapper>
+      </FormContainer>
     </Wrapper>
   );
 };
@@ -59,4 +97,23 @@ const Display = styled.div`
   font-size: 22px;
   color: var(--clr-primary);
   margin-bottom: 10px;
+`;
+
+const MapWrapper = styled.div`
+  height: 400px;
+`;
+
+const StyledIcon = styled(FaMapMarkerAlt)`
+  color: red;
+  font-size: 24px;
+  transform: translate(-12px, -20px);
+`;
+
+const StyledLink = styled(Link)``;
+
+const FormContainer = styled.div`
+  background-color: var(--clr-bg-alt);
+  margin: 2em 4em;
+  padding: 1em;
+  border-radius: 1em;
 `;
