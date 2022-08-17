@@ -30,6 +30,7 @@ export const GroupProvider = ({ children }) => {
       value={{
         groups,
         groupsStatus,
+        setGroupsStatus,
       }}
     >
       {children}

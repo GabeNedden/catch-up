@@ -106,9 +106,7 @@ const GroupsPage = () => {
           <Container>
             {groups
               .filter((check) => {
-                return check.members.some(
-                  (el) => el.userId === currentUser._id
-                );
+                return check.members.some((el) => el.id === currentUser._id);
               })
               .map((group) => {
                 return (
@@ -132,9 +130,7 @@ const GroupsPage = () => {
           <Container>
             {groups
               .filter((check) => {
-                return check.members.some(
-                  (el) => el.userId !== currentUser._id
-                );
+                return check.members.some((el) => el.id !== currentUser._id);
               })
               .map((group) => {
                 return (

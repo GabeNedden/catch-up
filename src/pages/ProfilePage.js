@@ -370,9 +370,9 @@ const ProfilePage = () => {
                   {groupsStatus === "loaded" &&
                     groups
                       .filter((check) => {
-                        return check.members.some(
-                          (el) => el.userId === currentUser._id
-                        );
+                        return check.members.some((el) => {
+                          return el.id === currentUser._id;
+                        });
                       })
                       .map((group) => {
                         return (

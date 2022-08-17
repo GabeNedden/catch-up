@@ -32,6 +32,7 @@ const GroupDetails = () => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res.data);
+        setMember(true);
       })
       .catch((error) => {
         console.log("error:", error);
@@ -40,13 +41,21 @@ const GroupDetails = () => {
 
   useEffect(() => {
     if (groupsStatus === "loaded" && currentUser) {
-      const thisGroup = groups.find((group) => {
-        return group._id === groupId;
-      });
-
-      setThisGroup(thisGroup);
+      setThisGroup(
+        groups.find((group) => {
+          return group._id === groupId;
+        })
+      );
     }
-  }, [currentUser, groupsStatus]);
+  }, [currentUser, groupsStatus, member]);
+
+  useEffect(() => {
+    if (thisGroup) {
+      setMember(
+        thisGroup.members.filter((el) => el.id === currentUser._id).length > 0
+      );
+    }
+  }, [thisGroup]);
 
   return (
     <Wrapper>
@@ -64,13 +73,17 @@ const GroupDetails = () => {
             </Container>
           </Center>
           <Row>
-            <Button onClick={joinGroup}>{thisGroup.members}</Button>
+            {member ? (
+              <Button disabled>Joined</Button>
+            ) : (
+              <Button onClick={joinGroup}>Join</Button>
+            )}
+
             <Button>Share Catch Up!</Button>
           </Row>
         </>
       )}
-      {thisGroup &&
-        postStatus === "loaded" &&
+      {thisGroup && postStatus === "loaded" && member ? (
         posts
           .filter((post) => {
             console.log(post.sharedWith);
@@ -78,7 +91,12 @@ const GroupDetails = () => {
           })
           .map((post) => {
             return <Post post={post} />;
-          })}
+          })
+      ) : (
+        <Center>
+          <Display>Join the group to see the Catch Ups!</Display>
+        </Center>
+      )}
     </Wrapper>
   );
 };
