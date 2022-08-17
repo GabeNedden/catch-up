@@ -1,13 +1,23 @@
 import { useContext } from "react";
 import styled from "styled-components";
 import SearchBar from "../components/SearchBar";
+import { UserContext } from "../contexts/UserContext";
 
 const MapFeed = () => {
+  const { currentUser } = useContext(UserContext);
+
   return (
     <Wrapper>
       <Header className="lobster">Catch Up!</Header>
+
       <Center>
-        <SearchBar />
+        {currentUser ? (
+          <SearchBar />
+        ) : (
+          <Display style={{ marginTop: 20 }}>
+            Please sign in to access search and map features...
+          </Display>
+        )}
       </Center>
     </Wrapper>
   );

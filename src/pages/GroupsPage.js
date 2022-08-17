@@ -27,6 +27,7 @@ const GroupsPage = () => {
       method: "POST",
       body: JSON.stringify({
         userId: currentUser._id,
+        username: currentUser.username,
         groupName: values.groupName,
         admins: values.admins,
         members: values.members,

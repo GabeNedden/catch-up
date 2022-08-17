@@ -26,7 +26,7 @@ const MainFeed = () => {
       {postStatus !== "loaded" && (
         <Center style={{ marginTop: 10 }}>
           <Display>Public Posts</Display>
-          <p>Sign in to discover events, groups, and friends</p>
+          <p>Sign in to discover events, groups, and friends near you.</p>
         </Center>
       )}
 
