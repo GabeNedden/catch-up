@@ -81,6 +81,7 @@ export const PostProvider = ({ children }) => {
         postStatus,
         setPostStatus,
         posts,
+        setPosts,
         sharedPosts,
         publicPosts,
         publicPostStatus,

@@ -36,7 +36,7 @@ const ProfilePage = () => {
   const { postFormOpen, setPostFormOpen } = useContext(PostContext);
   const { groups, groupsStatus, myGroups } = useContext(GroupContext);
 
-  const { postStatus, posts } = useContext(PostContext);
+  const { postStatus, posts, setPosts } = useContext(PostContext);
   const [values, setValues] = useState(initialState);
 
   const [shareArray, setShareArray] = useState([]);
@@ -129,6 +129,17 @@ const ProfilePage = () => {
       .then((res) => {
         console.log(res.data);
         setPostFormOpen(false);
+        setPosts([
+          ...posts,
+          {
+            owner: currentUser._id,
+            username: currentUser.username,
+            location: values.location,
+            title: values.title,
+            public: values.public,
+            startTime: values.startTime,
+          },
+        ]);
       })
       .catch((error) => {
         console.log("error:", error);
@@ -543,7 +554,9 @@ const ProfilePage = () => {
           ) : null}
           <PostColumn style={{ alignSelf: "center" }}>
             {postStatus === "loaded" &&
+            posts.length &&
             posts.filter((post) => {
+              console.log(posts);
               return post.owner === userId;
             }).length
               ? posts
