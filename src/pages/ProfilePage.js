@@ -259,7 +259,7 @@ const ProfilePage = () => {
               <Display>
                 Friends:{" "}
                 {
-                  targetUser.friends.filter(
+                  targetUser?.friends.filter(
                     (friend) => friend.status === "Confirmed"
                   ).length
                 }
