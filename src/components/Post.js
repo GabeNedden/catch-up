@@ -87,7 +87,9 @@ const Post = ({ post }) => {
           post.comments.map((comment) => {
             return (
               <Container>
-                {comment.username}: {comment.body}
+                <Link to={`/profile/${comment.id}`}>
+                  {comment.username}: {comment.body}
+                </Link>
               </Container>
             );
           })
