@@ -63,7 +63,11 @@ const Post = ({ post }) => {
       <Row style={{ justifyContent: "space-between" }}>
         <Display>{post.title}</Display>
         {post.startTime && (
-          <Display>{moment(post.startTime).fromNow()}</Display>
+          <Display>
+            {moment(post.startTime).format("MMM Do, YYYY @ h:mm a")}
+            {" - "}
+            {moment(post.startTime).fromNow()}
+          </Display>
         )}
       </Row>
       <MapWrapper>

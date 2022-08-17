@@ -6,18 +6,14 @@ import { v4 as uuidv4 } from "uuid";
 import SearchBar from "../components/SearchBar";
 import { AllUsersContext } from "../contexts/AllUsersContext";
 import { GroupContext } from "../contexts/GroupContext";
+import { UserContext } from "../contexts/UserContext";
 
 const MainFeed = () => {
+  const { currentUser } = useContext(UserContext);
   const { allUsers, allUsersStatus } = useContext(AllUsersContext);
-  const { postStatus, posts, publicPosts, publicPostStatus } =
+  const { sharedPosts, postStatus, posts, publicPosts, publicPostStatus } =
     useContext(PostContext);
   const { groups, groupsStatus } = useContext(GroupContext);
-
-  console.log(publicPostStatus);
-
-  if (publicPostStatus) {
-    console.log(publicPosts);
-  }
 
   return (
     <Wrapper>
@@ -30,15 +26,19 @@ const MainFeed = () => {
         </Center>
       )}
 
+      {!currentUser &&
+        publicPosts &&
+        publicPosts.length &&
+        publicPosts.map((post) => {
+          return <Post post={post} key={uuidv4()} />;
+        })}
+
       <div style={{ padding: "1em 0" }} />
-      {postStatus === "loaded"
-        ? posts.map((post) => {
-            return <Post post={post} key={uuidv4()} />;
-          })
-        : publicPostStatus === "loaded" &&
-          publicPosts.map((post) => {
-            return <Post post={post} key={uuidv4()} />;
-          })}
+      {sharedPosts &&
+        sharedPosts.length &&
+        sharedPosts.map((post) => {
+          return <Post post={post} key={uuidv4()} />;
+        })}
     </Wrapper>
   );
 };
