@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { BsSunFill, BsFillMoonStarsFill } from "react-icons/bs";
+import { BsPeople, BsSunFill, BsFillMoonStarsFill } from "react-icons/bs";
 import { BiSearchAlt, BiUserCircle } from "react-icons/bi";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { UserContext } from "../contexts/UserContext";
@@ -23,8 +23,13 @@ const Navbar = () => {
       </Ul>
       <Ul>
         <Li>
-          <Tab to="mapfeed">
+          <Tab to="/mapfeed">
             <BiSearchAlt />
+          </Tab>
+        </Li>
+        <Li>
+          <Tab to="/groups">
+            <BsPeople />
           </Tab>
         </Li>
         {currentUser ? (
