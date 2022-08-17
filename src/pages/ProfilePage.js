@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import Post from "../components/Post";
 import Avatar from "boring-avatars";
-import GoogleMapReact, { contextType } from "google-map-react";
+import GoogleMapReact from "google-map-react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
 const ProfilePage = () => {
@@ -38,8 +38,35 @@ const ProfilePage = () => {
   const { postStatus, posts } = useContext(PostContext);
   const [values, setValues] = useState(initialState);
 
+  const [shareArray, setShareArray] = useState([]);
+  const [checkedState, setCheckedState] = useState();
+
+  useEffect(() => {
+    if (currentUser) {
+      setCheckedState(new Array(currentUser.friends.length).fill(false));
+    }
+  }, [currentUser]);
+
   const onChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
+  };
+
+  const handleOnChange = (position) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    );
+
+    setCheckedState(updatedCheckedState);
+
+    let totalShare = [];
+    updatedCheckedState.forEach((cur, index) => {
+      if (cur === true) {
+        totalShare.push(currentUser.friends[index].friendId);
+      }
+    });
+
+    setShareArray(totalShare);
+    console.log("total", totalShare);
   };
 
   const onSubmit = (event) => {
@@ -51,7 +78,7 @@ const ProfilePage = () => {
         userId: currentUser._id,
         username: currentUser.username,
         location: values.location,
-        sharedWith: values.sharedWith,
+        sharedWith: shareArray,
         title: values.title,
         body: values.body,
         public: values.public,
@@ -243,7 +270,7 @@ const ProfilePage = () => {
       </Container>
 
       {/* start of post/map form */}
-      {postFormOpen && (
+      {postFormOpen && currentUser._id === userId && (
         <FormContainer>
           <Center>
             <Display id="postForm" style={{ marginBottom: 10 }}>
@@ -285,14 +312,6 @@ const ProfilePage = () => {
               defaultValue="Title"
             />
 
-            <Label>Share with</Label>
-            <Input
-              name="sharedWith"
-              value={values.sharedWith}
-              onChange={onChange}
-              defaultValue=""
-            />
-
             <Label>Public</Label>
             <Input
               type="checkbox"
@@ -330,6 +349,27 @@ const ProfilePage = () => {
               defaultValue=""
             />
 
+            <Label>Share with</Label>
+            {currentUser.friends.map(({ friendId, friendUsername }, index) => {
+              return (
+                <li key={index}>
+                  <div>
+                    <input
+                      type="checkbox"
+                      id={`custom-checkbox-${index}`}
+                      name={friendUsername}
+                      value={friendId}
+                      checked={checkedState[index]}
+                      onChange={() => handleOnChange(index)}
+                    />
+                    <label htmlFor={`custom-checkbox-${index}`}>
+                      {friendUsername}
+                    </label>
+                  </div>
+                </li>
+              );
+            })}
+
             <Center>
               <Button onClick={onSubmit}>Submit</Button>
               <Button onClick={() => setPostFormOpen(false)}>Cancel</Button>
@@ -342,8 +382,8 @@ const ProfilePage = () => {
         <Row>
           {targetUser?._id === currentUser?._id ? (
             <PostColumn>
+              <Display style={{ margin: "0 0 -30px 50px" }}>Friends</Display>
               <ContainerRev>
-                <Display>Friends</Display>
                 <Ul>
                   {currentUser.friends.map((friend) => {
                     return (
@@ -356,16 +396,16 @@ const ProfilePage = () => {
                   })}
                 </Ul>
               </ContainerRev>
+              <Display style={{ margin: "0 0 -30px 50px" }}>Circles</Display>
               <ContainerRev>
-                <Display>Circles</Display>
                 <Ul>
                   {currentUser.circles.map((circle) => {
                     return <Li>{circle}</Li>;
                   })}
                 </Ul>
               </ContainerRev>
+              <Display style={{ margin: "0 0 -30px 50px" }}>Groups</Display>
               <ContainerRev>
-                <Display>Groups</Display>
                 <Ul>
                   {groupsStatus === "loaded" &&
                     groups
@@ -386,8 +426,10 @@ const ProfilePage = () => {
             </PostColumn>
           ) : friendStatus && friendStatus.status === "Confirmed" ? (
             <PostColumn>
+              <Display style={{ margin: "0 0 -30px 50px" }}>
+                Mutual Friends
+              </Display>
               <ContainerRev>
-                <Display>Mutual Friends</Display>
                 <Ul>
                   {targetUser.friends
                     .filter((friend) => {
@@ -404,10 +446,20 @@ const ProfilePage = () => {
                         </Li>
                       );
                     })}
+                  {targetUser.friends.filter((friend) => {
+                    return currentUser.friends.some(
+                      (el) => el.friendId === friend.friendId
+                    );
+                  }).length > 0 ? null : (
+                    <Li>none</Li>
+                  )}
                 </Ul>
               </ContainerRev>
+              <Display style={{ margin: "0 0 -30px 50px" }}>
+                Mutual Groups
+              </Display>
               <ContainerRev>
-                <Display>Mutual Groups</Display>
+                <Ul>none</Ul>
               </ContainerRev>
             </PostColumn>
           ) : null}
@@ -485,6 +537,8 @@ const PostColumn = styled.div`
 `;
 
 const Display = styled.div`
+  font-weight: 700;
+  font-size: 22px;
   color: var(--clr-fg);
   margin: 2px;
 `;
@@ -558,7 +612,10 @@ const Center = styled.div`
   align-items: center;
 `;
 
-const Ul = styled.ul``;
+const Ul = styled.ul`
+  display: flex;
+  flex-direction: column;
+`;
 
 const Li = styled.li`
   margin: 0 0 0 5px;
