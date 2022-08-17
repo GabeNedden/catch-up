@@ -2,17 +2,19 @@ import { useContext, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { BsPeople, BsSunFill, BsFillMoonStarsFill } from "react-icons/bs";
+import { RiMapPinAddLine } from "react-icons/ri";
 import { BiSearchAlt, BiUserCircle } from "react-icons/bi";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { UserContext } from "../contexts/UserContext";
 
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
-import SearchBar from "./SearchBar";
+import { PostContext } from "../contexts/PostContext";
 
 const Navbar = () => {
   const [{ themeName, toggleTheme }] = useContext(ThemeContext);
   const { currentUser, status } = useContext(UserContext);
+  const { postFormOpen, setPostFormOpen } = useContext(PostContext);
 
   return (
     <Nav>
@@ -27,6 +29,13 @@ const Navbar = () => {
             <BiSearchAlt />
           </Tab>
         </Li>
+        {currentUser ? (
+          <Li>
+            <Tab to={`/profile/${currentUser?._id}`}>
+              <RiMapPinAddLine />
+            </Tab>
+          </Li>
+        ) : null}
         <Li>
           <Tab to="/groups">
             <BsPeople />

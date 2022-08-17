@@ -82,17 +82,19 @@ const Post = ({ post }) => {
           />
         </GoogleMapReact>
       </MapWrapper>
-      {post.comments ? (
-        post.comments.map((comment) => {
-          return (
-            <Container>
-              {comment.username}: {comment.body}
-            </Container>
-          );
-        })
-      ) : (
-        <div>no comments yet...</div>
-      )}
+      <Scroll>
+        {post.comments ? (
+          post.comments.map((comment) => {
+            return (
+              <Container>
+                {comment.username}: {comment.body}
+              </Container>
+            );
+          })
+        ) : (
+          <div>no comments yet...</div>
+        )}
+      </Scroll>
       <form onSubmit={onSubmit}>
         <Input
           onChange={onChange}
@@ -107,6 +109,11 @@ const Post = ({ post }) => {
 
 export default Post;
 
+const Scroll = styled.div`
+  height: 7em;
+  overflow-y: scroll;
+`;
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -114,7 +121,7 @@ const Wrapper = styled.div`
   border: 3px solid var(--clr-bg-alt);
   margin: 0 2em 2em 2em;
   padding: 1em;
-  height: 30em;
+
   border-radius: 1em;
 `;
 
@@ -168,7 +175,7 @@ const Input = styled.input`
   border-radius: 4px;
   border: 1px solid var(--clr-fg-alt);
   padding: 10px 15px;
-  margin-bottom: 10px;
+  margin: 10px 0;
   font-size: 14px;
   color: var(--clr-fg);
   background-color: var(--clr-bg);

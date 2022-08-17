@@ -46,7 +46,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (currentUser) {
-      setCheckedState(new Array(currentUser.friends.length).fill(false));
+      setCheckedState(new Array(currentUser.friends?.length).fill(false));
       if (myGroups) {
         console.log("first", myGroups);
         setCheckedGroup(new Array(myGroups.length).fill(false));

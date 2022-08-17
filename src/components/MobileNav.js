@@ -38,7 +38,7 @@ const MobileNav = () => {
 
           <Tab
             smooth
-            to={`/profile/${currentUser?._id}#postForm`}
+            to={`/profile/${currentUser?._id}`}
             onClick={() => {
               setPostFormOpen(true);
             }}
