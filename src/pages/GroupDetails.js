@@ -119,9 +119,17 @@ const GroupDetails = () => {
               })}
           </PostColumn>
         </Row>
+      ) : currentUser ? (
+        <Center>
+          <Display style={{ marginTop: 20 }}>
+            Join the group to see the Catch Ups!
+          </Display>
+        </Center>
       ) : (
         <Center>
-          <Display>Join the group to see the Catch Ups!</Display>
+          <Display style={{ marginTop: 20 }}>
+            Sign on for more features!
+          </Display>
         </Center>
       )}
     </Wrapper>

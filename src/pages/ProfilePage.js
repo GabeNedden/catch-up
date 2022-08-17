@@ -216,8 +216,11 @@ const ProfilePage = () => {
   if (!isAuthenticated) {
     return (
       <Wrapper>
-        {" "}
-        Loading... if problem persists you may not be authenticated
+        <Center>
+          <Display style={{ marginTop: 20 }}>
+            Please sign up to see Profile details
+          </Display>
+        </Center>
       </Wrapper>
     );
   }

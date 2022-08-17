@@ -147,6 +147,26 @@ const GroupsPage = () => {
           </Container>
         </>
       )}
+
+      {groupsStatus === "loaded" && !currentUser && (
+        <>
+          <Center>
+            <Display style={{ marginTop: 20 }}>Public Groups</Display>
+          </Center>
+          <Container>
+            {groups.map((group) => {
+              return (
+                <Row>
+                  <StyledLink to={`/group/${group._id}`}>
+                    {group.name}
+                  </StyledLink>
+                  <Info>members: {group.members.length}</Info>
+                </Row>
+              );
+            })}
+          </Container>
+        </>
+      )}
     </Wrapper>
   );
 };
