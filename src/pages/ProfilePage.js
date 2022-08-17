@@ -313,6 +313,7 @@ const ProfilePage = () => {
           </Center>
           <MapWrapper>
             <GoogleMapReact
+              required
               onClick={(e) => {
                 setValues({
                   ...values,
@@ -372,7 +373,11 @@ const ProfilePage = () => {
               name="startTime"
               value={values.startTime}
             />
-            <Button style={{ padding: " 5px 10px" }} onClick={resetDate}>
+            <Button
+              type="button"
+              style={{ padding: " 5px 10px" }}
+              onClick={resetDate}
+            >
               Now
             </Button>
 
@@ -425,7 +430,18 @@ const ProfilePage = () => {
               })}
 
             <Center>
-              <Button onClick={onSubmit}>Submit</Button>
+              <Button
+                disabled={
+                  !(
+                    values.location &&
+                    values.title &&
+                    (shareArray.length || groupArray.length || values.public)
+                  )
+                }
+                onClick={onSubmit}
+              >
+                Submit
+              </Button>
               <Button onClick={() => setPostFormOpen(false)}>Cancel</Button>
             </Center>
           </Form>
@@ -612,7 +628,7 @@ const StyledIcon = styled(FaMapMarkerAlt)`
 `;
 
 const Button = styled.button`
-  background: var(--clr-fg);
+  background-color: var(--clr-fg-alt);
   color: var(--clr-bg);
   border-radius: 5px;
   padding: 10px 20px;
@@ -626,6 +642,7 @@ const Button = styled.button`
   &:disabled {
     cursor: default;
     transform: none;
+    background-color: var(--clr-fg);
   }
 `;
 
